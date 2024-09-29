@@ -11,6 +11,6 @@ make the needed changes regarding name, url, database connection
 
 `composer install`
 
-`npm install & npm run build`
+`npm install`
 
 `php artisan serve` and `npm run dev`
