@@ -5,6 +5,10 @@
 
 make the needed changes regarding name, url, database connection
 
+`php artisan migrate`
+
+`php artisan excel:sync`
+
 `composer install`
 
 `npm install & npm run build`
