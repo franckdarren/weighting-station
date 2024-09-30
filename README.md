@@ -11,6 +11,8 @@ make the needed changes regarding name, url, database connection
 
 `composer install`
 
+`php artisan db:seed`
+
 `npm install`
 
 `php artisan serve` and `npm run dev`
