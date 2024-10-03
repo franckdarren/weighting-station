@@ -1,0 +1,13 @@
+*.sqlite*
+*node_modules*
+*vendor*
+.env
+.env.*
+/storage
+/bootstrap/cache
+/storage/framework/sessions
+/public/mix-manifest.json
+.idea
+*.iml
+*.bak
+*.old
