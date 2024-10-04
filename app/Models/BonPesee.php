@@ -18,6 +18,7 @@ class BonPesee extends Model
         'lineaire_restant',
         'poids',
         'surchage',
+        'vitesse',
 
         'vehicule_id',
         'conducteur_id',
