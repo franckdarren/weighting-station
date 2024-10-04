@@ -27,15 +27,11 @@
                 <x-input placeholder="Mot de passe" id="password" class="block mt-1 w-full bg-transparent text-white placeholder-[#cfcfcf] pl-8" type="password" name="password" required autocomplete="current-password" />
             </div>
             <div class="flex items-center justify-end mt-4">
-<<<<<<< HEAD
-                
-=======
                 @if (Route::has('password.request'))
                     <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('password.request') }}">
                         {{ __('Forgot your password?') }}
                     </a>
                 @endif
->>>>>>> dc828b2ce21382de66a07a952ffefe1e461ae472
 
                 <x-button class="w-full shadow-md flex justify-center bg-white text-[#2148C0] hover:text-white hover:bg-[#2d699c] ">
                     {{ __('Se connecter') }}
