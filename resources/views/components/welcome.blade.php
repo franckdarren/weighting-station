@@ -2,7 +2,7 @@
 
     <div class="flex justify-between items-center w-full">
         <!-- compteur de pesage -->
-        <div class="flex flex-col bg-white rounded-lg shadow-xl w-[40%] ">
+        <a href="{{ route('pesage') }}" class="flex flex-col bg-white rounded-lg shadow-xl w-[40%] hover:bg-slate-200 cursor-pointer">
             <div class="flex">
                 <div class="flex-col p-5 items-center w-1/2">
                     <div class="w-40 h-40 mb-10">
@@ -32,10 +32,10 @@
                 </div>
             </div>
             <div class="bg-[#3d8cd6] w-full h-2 rounded-b-lg"></div>
-        </div>
+        </a>
 
         <!-- compteur de facture -->
-        <div class="flex flex-col bg-white rounded-lg shadow-xl w-[40%]">
+        <a href="{{ route('facturation') }}" class="flex flex-col bg-white rounded-lg shadow-xl w-[40%] hover:bg-slate-200 cursor-pointer">
             <div class="flex">
                 <div class="flex-col p-5 items-center w-1/2">
                     <div class="w-40 h-40 mb-10">
@@ -65,16 +65,16 @@
                 </div>
             </div>
             <div class="bg-[#3d8cd6] w-full h-2 rounded-b-lg"></div>
-        </div>
+        </a>
     </div>
 
     <!-- stats factures gateau -->
-    <div class="flex-col w-[60%] justify-center items-center text-center space-y-16 bg-white rounded-lg shadow-xl">
+    <a href="{{ route('rapport') }}" class="flex-col w-[60%] justify-center items-center text-center space-y-16 bg-white rounded-lg shadow-xl cursor-pointer hover:bg-slate-200">
         <span class="text-[#3d8cd6] text-2xl font-semibold">Recapitulatif global</span>
         <div class="">
             <canvas id="pieChart"></canvas>
         </div>
-    </div>
+    </a>
 
 </div>
 
