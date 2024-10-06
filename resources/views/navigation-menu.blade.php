@@ -1,4 +1,4 @@
-<nav x-data="{ open: false }" class="bg-[#35648e] border-b border-gray-100">
+<nav x-data="{ open: false }" class="bg-[#35648e] shadow-lg shadow-slate-600">
     <!-- Primary Navigation Menu -->
     <div class="pe-4 sm:pe-6 lg:pe-8">
         <div class="flex justify-between h-16">
@@ -131,6 +131,10 @@
 
                             <x-dropdown-link href="{{ route('profile.show') }}">
                                 {{ __('Profile') }}
+                            </x-dropdown-link>
+
+                            <x-dropdown-link href="{{ route('register') }}">
+                                {{ __('Add new user') }}
                             </x-dropdown-link>
 
                             @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
