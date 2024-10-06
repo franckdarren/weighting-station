@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PesageController;
 
 Route::get('/', function () {
     return view('auth/login');
@@ -14,9 +15,9 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
-    Route::get('/dashboard/pesage', function () {
-        return view('dashboard.pesage');
-    })->name('pesage');
+
+    Route::get('/pesage', [PesageController::class, 'index'])->name('pesage');
+
     Route::get('/dashboard/facturation', function () {
         return view('dashboard.facturation');
     })->name('facturation');

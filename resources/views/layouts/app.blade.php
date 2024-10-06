@@ -22,7 +22,7 @@
 <body class="font-sans antialiased flex flex-col min-h-screen">
     <x-banner />
 
-    <div class="flex-grow bg-gray-100">
+    <div class="flex-grow bg-[#e7eff7]">
         @livewire('navigation-menu')
 
         <!-- Page Heading -->
