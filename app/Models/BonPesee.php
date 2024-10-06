@@ -32,7 +32,7 @@ class BonPesee extends Model
 
     public function conducteur()
     {
-        return $this->belongsTo(Vehicule::class);
+        return $this->belongsTo(Conducteur::class);
     }
 
     public function quittancePesage()
