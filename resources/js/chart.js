@@ -23,8 +23,8 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     const dataPesage = 19;
-    const dataFacture = 5;
-    const dataFullFacture = 20;
+    const dataFacture = 0;
+    const dataFullFacture = 30;
     const dataFactureBuy = 10;
     const dataFactureNotBuy = 5;
 
@@ -121,8 +121,8 @@ document.addEventListener('DOMContentLoaded', function () {
         data: {
             labels: ['Total Factures', 'Total Factures payées',  'Total Factures non-payées'],
             datasets: [{
-                data: [dataFactureBuy, dataFactureNotBuy, dataFullFacture - dataFactureBuy - dataFactureNotBuy],
-                backgroundColor: ['#e15759', '#f28e2c', '#3ba94a']
+                data: [dataFullFacture, dataFactureBuy, dataFactureNotBuy],
+                backgroundColor: ['#e15759', '#f28e2c', '#3ba94a', 'transparent'],
             }]
         },
         options: {

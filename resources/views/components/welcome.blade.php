@@ -1,69 +1,75 @@
-<div class="flex-col space-y-24">
+<div class="flex flex-col space-y-24 items-center">
 
     <div class="flex justify-between items-center w-full">
         <!-- compteur de pesage -->
-        <div class="flex bg-white rounded-lg shadow-xl w-[40%]">
-            <div class="flex-col p-5 items-center w-1/2">
-                <div class="w-40 h-40 mb-10">
-                    <canvas id="circularCounterPesage"></canvas>
+        <div class="flex flex-col bg-white rounded-lg shadow-xl w-[40%] ">
+            <div class="flex">
+                <div class="flex-col p-5 items-center w-1/2">
+                    <div class="w-40 h-40 mb-10">
+                        <canvas id="circularCounterPesage"></canvas>
+                    </div>
+                    <div class="flex-col text-center w-full h-1/2 text-[#3d8cd6]">
+                        <i class="fa-solid fa-truck mb-4 text-5xl"></i>
+                        <div>
+                            <span>
+                                Nombre de voiture pesé
+                            </span>
+                        </div>
+                    </div>
                 </div>
-                <div class="flex-col text-center w-full h-1/2 text-[#3d8cd6]">
-                    <i class="fa-solid fa-truck mb-4 text-5xl"></i>
-                    <div>
-                        <span>
-                            Nombre de voiture pesé
-                        </span>
+
+                <!-- Formulaire de filtre par date -->
+                <div class="flex flex-col justify-center items-center space-y-5 w-1/2">
+                    <div class="flex-col">
+                        <x-label for="date_start" value="{{ __('Date de début') }}" class="mb-2" />
+                        <x-input type="date" id="date_start" name="date_start" :value="old('date_start')" required autofocus class="w-full" />
+                    </div>
+
+                    <div class="flex-col">
+                        <x-label for="date_end" value="{{ __('Date de fin') }}" class="mb-2" />
+                        <x-input type="date" id="date_end" name="date_end" :value="old('date_end')" required class="w-full" />
                     </div>
                 </div>
             </div>
-
-            <!-- Formulaire de filtre par date -->
-            <div class="flex flex-col justify-center items-center space-y-5 w-1/2">
-                <div class="flex-col">
-                    <x-label for="date_start" value="{{ __('Date de début') }}" class="mb-2" />
-                    <x-input type="date" id="date_start" name="date_start" :value="old('date_start')" required autofocus class="w-full" />
-                </div>
-
-                <div class="flex-col">
-                    <x-label for="date_end" value="{{ __('Date de fin') }}" class="mb-2" />
-                    <x-input type="date" id="date_end" name="date_end" :value="old('date_end')" required class="w-full" />
-                </div>
-            </div>
+            <div class="bg-[#3d8cd6] w-full h-2 rounded-b-lg"></div>
         </div>
 
         <!-- compteur de facture -->
-        <div class="flex bg-white rounded-lg shadow-xl w-[40%]">
-            <div class="flex-col p-5 items-center w-1/2">
-                <div class="w-40 h-40 mb-10">
-                    <canvas id="circularCounterFactures"></canvas>
+        <div class="flex flex-col bg-white rounded-lg shadow-xl w-[40%]">
+            <div class="flex">
+                <div class="flex-col p-5 items-center w-1/2">
+                    <div class="w-40 h-40 mb-10">
+                        <canvas id="circularCounterFactures"></canvas>
+                    </div>
+                    <div class="flex-col text-center w-full h-1/2 text-[#3d8cd6]">
+                        <i class="fa-solid fa-paste mb-4 text-5xl"></i>
+                        <div>
+                            <span>
+                                Facture Total/Jour
+                            </span>
+                        </div>
+                    </div>
                 </div>
-                <div class="flex-col text-center w-full h-1/2 text-[#3d8cd6]">
-                    <i class="fa-solid fa-paste mb-4 text-5xl"></i>
-                    <div>
-                        <span>
-                            Facture Total/Jour
-                        </span>
+
+                <!-- Formulaire de filtre par date -->
+                <div class="flex flex-col justify-center items-center space-y-5 w-1/2">
+                    <div class="flex-col">
+                        <x-label for="date_start" value="{{ __('Date de début') }}" class="mb-2" />
+                        <x-input type="date" id="date_start" name="date_start" :value="old('date_start')" required autofocus class="w-full" />
+                    </div>
+
+                    <div class="flex-col">
+                        <x-label for="date_end" value="{{ __('Date de fin') }}" class="mb-2" />
+                        <x-input type="date" id="date_end" name="date_end" :value="old('date_end')" required class="w-full" />
                     </div>
                 </div>
             </div>
-
-            <!-- Formulaire de filtre par date -->
-            <div class="flex flex-col justify-center items-center space-y-5 w-1/2">
-                <div class="flex-col">
-                    <x-label for="date_start" value="{{ __('Date de début') }}" class="mb-2" />
-                    <x-input type="date" id="date_start" name="date_start" :value="old('date_start')" required autofocus class="w-full" />
-                </div>
-
-                <div class="flex-col">
-                    <x-label for="date_end" value="{{ __('Date de fin') }}" class="mb-2" />
-                    <x-input type="date" id="date_end" name="date_end" :value="old('date_end')" required class="w-full" />
-                </div>
-            </div>
+            <div class="bg-[#3d8cd6] w-full h-2 rounded-b-lg"></div>
         </div>
     </div>
 
     <!-- stats factures gateau -->
-    <div class="flex-col justify-center items-center w-full text-center space-y-16">
+    <div class="flex-col w-[60%] justify-center items-center text-center space-y-16 bg-white rounded-lg shadow-xl">
         <span class="text-[#3d8cd6] text-2xl font-semibold">Recapitulatif global</span>
         <div class="">
             <canvas id="pieChart"></canvas>
