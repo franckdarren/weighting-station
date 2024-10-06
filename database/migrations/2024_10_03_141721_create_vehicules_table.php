@@ -17,9 +17,9 @@ return new class extends Migration
             $table->string('carte_grise');
             $table->string('statut');
             $table->string('nom_proprietaire');
-            $table->string('entreprise');
+            $table->string('entreprise')->nullable();
             $table->boolean('en_convoi');
-            $table->integer('nb_vehicule');
+            $table->integer('nb_vehicule')->nullable();
 
             $table->foreignId('type_vehicule_id')->constrained()->onDelete('cascade');
 

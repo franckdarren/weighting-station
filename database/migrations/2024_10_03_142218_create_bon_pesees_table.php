@@ -21,6 +21,8 @@ return new class extends Migration
             $table->integer('lineaire_restant');
             $table->integer('poids');
             $table->integer('surchage');
+            $table->float('vitesse');
+
 
             $table->foreignId('vehicule_id')->constrained()->onDelete('cascade');
             $table->foreignId('conducteur_id')->constrained()->onDelete('cascade');
