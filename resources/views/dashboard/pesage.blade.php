@@ -12,7 +12,7 @@
                                 <i class="fa-solid fa-magnifying-glass fa-rotate-90 me-2"></i>
                             </div>
                             <div>
-                                <button class="border border-[#19a91e] text-[#19a91e] py-1 px-8 hover:animate-bounce">
+                                <button class="border border-[#19a91e] text-[#19a91e] py-1 px-8 hover:border-green-700 hover:text-green-700 hover:bg-slate-200">
                                     <i class="fa-solid fa-download fa-bounce me-1"></i>
                                     Export
                                 </button>
