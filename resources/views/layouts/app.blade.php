@@ -45,6 +45,8 @@
 
     @stack('modals')
     @livewireScripts
+    @livewire('notifications')
+    @livewire('database-notifications')
     @filamentScripts
 </body>
 

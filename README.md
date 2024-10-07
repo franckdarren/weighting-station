@@ -16,3 +16,6 @@ make the needed changes regarding name, url, database connection
 `npm install`
 
 `php artisan serve` and `npm run dev`
+
+`php artisan queue:work`
+

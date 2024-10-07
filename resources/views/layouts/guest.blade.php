@@ -27,6 +27,7 @@
     </div>
 
     @livewireScripts
+    @livewire('notifications')
     @filamentScripts
 </body>
 
