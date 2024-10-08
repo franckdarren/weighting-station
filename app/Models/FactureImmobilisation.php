@@ -23,9 +23,4 @@ class FactureImmobilisation extends Model
     {
         return $this->belongsTo(BonImmobilisation::class);
     }
-
-    public function quittancePesage()
-    {
-        return $this->hasOne(QuittancePesage::class);
-    }
 }

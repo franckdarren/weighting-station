@@ -20,6 +20,8 @@ return new class extends Migration
             $table->string('entreprise')->nullable();
             $table->boolean('en_convoi');
             $table->integer('nb_vehicule')->nullable();
+            $table->integer('ptac');
+
 
             $table->foreignId('type_vehicule_id')->constrained()->onDelete('cascade');
 

@@ -33,15 +33,15 @@ class ListPesages extends Component implements HasForms, HasTable
                 TextColumn::make('provenance')->searchable(),
                 TextColumn::make('destination')->searchable(),
                 TextColumn::make('poids')
-                    ->label('Poids (en T)')
-                    ->formatStateUsing(fn($state) => number_format($state / 1000, 2)),
+                    ->label('Poids (kg)'),
                 TextColumn::make('surchage')
-                    ->label('Surchage (en T)')
-                    ->formatStateUsing(fn($state) => $state == 0 ? '' : number_format($state / 1000, 2))
+                    ->label('Surchage (kg)')
                     ->badge(fn($state) => $state > 0)
                     ->color(fn($state) => $state > 0 ? 'danger' : ''),
                 TextColumn::make('vitesse')
-                    ->label('Vitesse (en Km/h)'),
+                    ->label('Vitesse (km/h)')
+                    ->badge()
+                    ->color(fn($state) => $state > 8 ? 'danger' : 'success'),
 
                 TextColumn::make('vehicule.plaque_immatriculation')
                     ->label("Immatriculation")->searchable()
@@ -93,13 +93,23 @@ class ListPesages extends Component implements HasForms, HasTable
 
             ])
             ->filters([
+                //Filtrer les pesées valides
+                Filter::make('Pesées valides')
+                    ->query(fn(Builder $query): Builder => $query->where('vitesse', '<', 8))
+                    ->toggle(),
+
+                //Filtrer les pesées invalides
+                Filter::make('Pesées invalides')
+                    ->query(fn(Builder $query): Builder => $query->where('vitesse', '>=', 8))
+                    ->toggle(),
+
                 //Filtrer les pesées avec surchage
-                Filter::make('surchage')
+                Filter::make('Avec surchage')
                     ->query(fn(Builder $query): Builder => $query->where('surchage', '>', 0))
                     ->toggle(),
 
                 //Filtrer les pesées sans surchage
-                Filter::make('sans surchage')
+                Filter::make('Sans surchage')
                     ->query(fn(Builder $query): Builder => $query->where('surchage', '=', 0))
                     ->toggle(),
             ])

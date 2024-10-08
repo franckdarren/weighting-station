@@ -18,6 +18,7 @@ class Vehicule extends Model
         'en_convoi',
         'nb_vehicule',
         'type_vehicule_id',
+        'ptac',
     ];
 
     public function bonPesees()

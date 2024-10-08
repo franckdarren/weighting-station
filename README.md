@@ -19,3 +19,5 @@ make the needed changes regarding name, url, database connection
 
 `php artisan queue:work`
 
+`php artisan make:filament-user`
+

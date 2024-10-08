@@ -29,6 +29,7 @@ class VehiculeFactory extends Factory
             'entreprise' => $this->faker->company,
             'en_convoi' => false,
             'nb_vehicule' => 0,
+            'ptac' => 50000,
             'type_vehicule_id' => TypeVehicule::inRandomOrder()->first()->id,
         ];
     }

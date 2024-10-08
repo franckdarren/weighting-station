@@ -27,8 +27,9 @@ class TypeVehiculeFactory extends Factory
             'nom' => 'VEHICULE A ESSIEUX',
             'limite_poids' => $limite_poids,
             'tolerance_limite_poids' => $limite_poids,
-            'nb_essieux' => $this->faker->numberBetween(2, 6),
-            'nb_groupe_essieux' => $this->faker->numberBetween(1, 3),
+            'nb_essieux' => 6,
+            'nb_groupe_essieux' => 3,
+            
         ];
     }
 }

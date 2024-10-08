@@ -11,15 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('quittance_pesages', function (Blueprint $table) {
+        Schema::create('facture_pesages', function (Blueprint $table) {
             $table->id();
             $table->string('numero');
-            $table->integer('duree_operation');
-            $table->integer('tarif');
+            $table->string('type');
+            $table->integer('forfait_usage');
+            $table->integer('montant_total');
+            $table->string('statut')->default('En attente de paiement');
 
             $table->foreignId('bon_pesee_id')->constrained()->onDelete('cascade');
             $table->foreignId('pv_id')->nullable()->constrained()->onDelete('cascade');
-            $table->foreignId('facture_immobilisation_id')->nullable()->constrained()->onDelete('cascade');
 
             $table->timestamps();
         });

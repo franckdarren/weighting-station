@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('bon_pesees', function (Blueprint $table) {
             $table->id();
-            $table->string('numero');
+            $table->string('numero')->unique();
             $table->string('produits_transportes');
             $table->string('provenance');
             $table->string('destination');
@@ -22,6 +22,14 @@ return new class extends Migration
             $table->integer('poids');
             $table->integer('surchage');
             $table->float('vitesse');
+
+            $table->integer('poids_E1')->nullable();
+            $table->integer('poids_E2')->nullable();
+            $table->integer('poids_E3')->nullable();
+            $table->integer('poids_E4')->nullable();
+            $table->integer('poids_E5')->nullable();
+            $table->integer('poids_E6')->nullable();
+
 
 
             $table->foreignId('vehicule_id')->constrained()->onDelete('cascade');
