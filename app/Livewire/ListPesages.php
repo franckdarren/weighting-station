@@ -96,22 +96,26 @@ class ListPesages extends Component implements HasForms, HasTable
                 //Filtrer les pesées valides
                 Filter::make('Pesées valides')
                     ->query(fn(Builder $query): Builder => $query->where('vitesse', '<', 8))
-                    ->toggle(),
+                    ->toggle()
+                    ->label('Pesées valides (' . $this->getValidWeightsCount() . ')'),
 
                 //Filtrer les pesées invalides
                 Filter::make('Pesées invalides')
                     ->query(fn(Builder $query): Builder => $query->where('vitesse', '>=', 8))
-                    ->toggle(),
+                    ->toggle()
+                    ->label('Pesées invalides (' . $this->getInvalidWeightsCount() . ')'),
 
                 //Filtrer les pesées avec surchage
                 Filter::make('Avec surchage')
                     ->query(fn(Builder $query): Builder => $query->where('surchage', '>', 0))
-                    ->toggle(),
+                    ->toggle()
+                    ->label('Avec surcharge (' . $this->getSurchargeWeightsCount() . ')'),
 
                 //Filtrer les pesées sans surchage
                 Filter::make('Sans surchage')
                     ->query(fn(Builder $query): Builder => $query->where('surchage', '=', 0))
-                    ->toggle(),
+                    ->toggle()
+                    ->label('Sans surcharge (' . $this->getNoSurchargeWeightsCount() . ')'),
             ])
             ->actions([
                 // ...
@@ -125,6 +129,30 @@ class ListPesages extends Component implements HasForms, HasTable
                         ExportFormat::Xlsx
                     ])
             ]);
+    }
+
+    // Méthode pour obtenir le décompte
+    protected function getValidWeightsCount(): int
+    {
+        return BonPesee::where('vitesse', '<', 8)->count();
+    }
+
+    // Méthode pour obtenir le décompte
+    protected function getInvalidWeightsCount(): int
+    {
+        return BonPesee::where('vitesse', '>=', 8)->count();
+    }
+
+    // Méthode pour obtenir le décompte
+    protected function getSurchargeWeightsCount(): int
+    {
+        return BonPesee::where('surchage', '>', 0)->count();
+    }
+
+    // Méthode pour obtenir le décompte
+    protected function getNoSurchargeWeightsCount(): int
+    {
+        return BonPesee::where('surchage', '=', 0)->count();
     }
 
     public function render(): View
