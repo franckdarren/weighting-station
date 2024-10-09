@@ -2,20 +2,21 @@
 
 namespace App\Livewire;
 
-use App\Models\FacturePesage;
 use Livewire\Component;
-use Filament\Actions\Exports\Enums\ExportFormat;
 use Filament\Tables\Table;
+use App\Models\FacturePesage;
+use Filament\Tables\Filters\Filter;
 use Illuminate\Contracts\View\View;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Contracts\HasTable;
-use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Tables\Actions\ExportAction;
-use Filament\Tables\Concerns\InteractsWithTable;
-use Filament\Tables\Filters\Filter;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Tables\Actions\ExportBulkAction;
+use App\Filament\Exports\FacturePesageExporter;
+use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Actions\Exports\Enums\ExportFormat;
+use Filament\Tables\Concerns\InteractsWithTable;
 
 class ListFactures extends Component implements HasForms, HasTable
 {
@@ -116,7 +117,13 @@ class ListFactures extends Component implements HasForms, HasTable
                 // ...
             ])
             ->bulkActions([
-                // ...
+                //Export
+                ExportBulkAction::make()
+                    ->exporter(FacturePesageExporter::class)
+                    ->label('Exporter')
+                    ->formats([
+                        ExportFormat::Xlsx
+                    ])
             ]);
     }
 
