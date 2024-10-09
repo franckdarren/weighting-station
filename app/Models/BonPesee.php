@@ -49,7 +49,7 @@ class BonPesee extends Model
             }
 
             // Générer le numéro
-            $bonPesee->numero = 'BP-' . str_pad($nextId, 6, '0', STR_PAD_LEFT);
+            $bonPesee->numero = 'BP-' . $nextId;
         });
     }
 

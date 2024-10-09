@@ -47,7 +47,7 @@ class Pv extends Model
             }
 
             // Générer le numéro
-            $pv->numero = 'PV-' . str_pad($nextId, 6, '0', STR_PAD_LEFT);
+            $pv->numero = 'PV-' . $nextId;
         });
     }
 
