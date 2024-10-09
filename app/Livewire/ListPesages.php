@@ -128,6 +128,12 @@ class ListPesages extends Component implements HasForms, HasTable
                     ->formats([
                         ExportFormat::Xlsx
                     ])
+                    ->after(function () {
+                        // Enregistrement de l'export dans le journal
+                        activity()
+                            ->causedBy(auth()->user())
+                            ->log('Export de pesages effectués au format Excel.');
+                    })
             ]);
     }
 
