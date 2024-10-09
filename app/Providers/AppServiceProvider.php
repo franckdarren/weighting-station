@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\BonPesee;
+use App\Observers\BonPeseeObserver;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -19,6 +21,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        //Observable pour la création automatique des pvs
+        BonPesee::observe(BonPeseeObserver::class);
     }
 }

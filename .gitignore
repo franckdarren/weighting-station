@@ -1,8 +1,7 @@
 *.sqlite*
-/node_modules
-*/vendor*
-.env
-.env.*
+/node_modules*
+/vendor*
+.env*
 /storage
 /bootstrap/cache
 /storage/framework/sessions

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer('tolerance_limite_poids');
             $table->integer('nb_essieux');
             $table->integer('nb_groupe_essieux');
+            
 
             $table->timestamps();
         });
