@@ -20,6 +20,26 @@ class FacturePesage extends Model
         'pv_id',
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($facture) {
+            // Récupérer la derniere facture
+            $lastFacture = self::orderBy('id', 'desc')->first();
+
+            // Déterminer le prochain numéro
+            if ($lastFacture) {
+                $lastId = (int) str_replace('F-', '', $lastFacture->numero);
+                $nextId = $lastId + 1;
+            } else {
+                $nextId = 1; // Premiere facture
+            }
+
+            // Générer le numéro
+            $facture->numero = 'F-' . $nextId;
+        });
+    }
 
     public function bonPesee()
     {
