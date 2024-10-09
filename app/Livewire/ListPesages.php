@@ -143,13 +143,13 @@ class ListPesages extends Component implements HasForms, HasTable
         return BonPesee::where('vitesse', '>=', 8)->count();
     }
 
-    // Méthode pour obtenir le décompte
+    // Méthode pour obtenir les bonPesées avec surcharges
     protected function getSurchargeWeightsCount(): int
     {
         return BonPesee::where('surchage', '>', 0)->count();
     }
 
-    // Méthode pour obtenir le décompte
+    // Méthode pour obtenir les bonPesées sans surcharges
     protected function getNoSurchargeWeightsCount(): int
     {
         return BonPesee::where('surchage', '=', 0)->count();

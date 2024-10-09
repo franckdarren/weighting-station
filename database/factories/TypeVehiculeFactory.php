@@ -21,7 +21,7 @@ class TypeVehiculeFactory extends Factory
     public function definition(): array
     {
         // Générer une valeur pour limite_poids
-        $limite_poids = $this->faker->numberBetween(30000, 70000);
+        $limite_poids = 84000;
 
         return [
             'nom' => 'VEHICULE A ESSIEUX',
@@ -29,7 +29,7 @@ class TypeVehiculeFactory extends Factory
             'tolerance_limite_poids' => $limite_poids,
             'nb_essieux' => 6,
             'nb_groupe_essieux' => 3,
-            
+
         ];
     }
 }
