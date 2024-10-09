@@ -26,14 +26,12 @@ class ListActivites extends Component implements HasForms, HasTable
     public function table(Table $table): Table
     {
         return $table
-            ->query(Activity::query())
+            ->query(Activity::query()->orderBy('created_at', 'desc'))
             ->columns([
                 TextColumn::make('created_at')
                     ->label('Date')
                     ->sortable()
-                    ->formatStateUsing(function ($state) {
-                        return \Carbon\Carbon::parse($state)->translatedFormat('j F Y');
-                    }),
+                    ->formatStateUsing(fn($state) => \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $state)->translatedFormat('j F Y \à H:i')),
                 TextColumn::make('causer.code')
                     ->label('Utilisateur')
                     ->sortable()
