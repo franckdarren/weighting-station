@@ -1,3 +1,6 @@
+<!-- Tableau des rapports -->
 <x-app-layout>
-    <h1>Page des rapports</h1>
+    <div class="px-[5%] my-10">
+        @livewire('list-activites')
+    </div>
 </x-app-layout>

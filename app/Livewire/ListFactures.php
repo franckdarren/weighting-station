@@ -17,6 +17,7 @@ use App\Filament\Exports\FacturePesageExporter;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Actions\Exports\Enums\ExportFormat;
 use Filament\Tables\Concerns\InteractsWithTable;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class ListFactures extends Component implements HasForms, HasTable
 {
@@ -124,6 +125,12 @@ class ListFactures extends Component implements HasForms, HasTable
                     ->formats([
                         ExportFormat::Xlsx
                     ])
+                    ->after(function () {
+                        // Enregistrement de l'export dans le journal
+                        activity()
+                            ->causedBy(auth()->user())
+                            ->log('Export de factures effectuées au format Excel.');
+                    })
             ]);
     }
 
