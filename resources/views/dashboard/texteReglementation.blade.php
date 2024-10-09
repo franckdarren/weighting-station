@@ -1,3 +1,10 @@
+<!-- Textes de reglementations -->
 <x-app-layout>
-    <h1>Page des textes de reglementation</h1>
+    <div class="px-[5%] my-10">
+        <h1 class="underline text-center text-2xl font-bold animate-pulse">
+            RAPPEL DE QUELQUES DISPOSITIONS REGLEMENTAIRES
+        </h1>
+
+        @livewire('modal-component')
+    </div>
 </x-app-layout>
