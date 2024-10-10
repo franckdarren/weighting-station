@@ -20,7 +20,8 @@
     @filamentStyles
 </head>
 
-<body class="font-sans antialiased flex flex-col min-h-screen">
+<body class="font-sans antialiased flex flex-col min-h-screen" x-data="{ darkMode: false }"
+    :class="{ 'dark': darkMode === true }">
     <x-banner />
 
     <div class="flex-grow bg-[#e7eff7]">
