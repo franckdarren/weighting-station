@@ -3,8 +3,10 @@
 namespace App\Livewire;
 
 use Livewire\Component;
+use PDF; // Utilisation du facade PDF
 use Filament\Tables\Table;
 use App\Models\FacturePesage;
+use Filament\Tables\Actions\Action;
 use Filament\Tables\Filters\Filter;
 use Illuminate\Contracts\View\View;
 use Filament\Forms\Contracts\HasForms;
@@ -12,12 +14,14 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Actions\ExportAction;
 use Illuminate\Database\Eloquent\Builder;
+use Spatie\Activitylog\Traits\LogsActivity;
 use Filament\Tables\Actions\ExportBulkAction;
 use App\Filament\Exports\FacturePesageExporter;
+use App\Models\BonPesee;
+use App\Models\Pv;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Actions\Exports\Enums\ExportFormat;
 use Filament\Tables\Concerns\InteractsWithTable;
-use Spatie\Activitylog\Traits\LogsActivity;
 
 class ListFactures extends Component implements HasForms, HasTable
 {
@@ -89,25 +93,21 @@ class ListFactures extends Component implements HasForms, HasTable
 
             ])
             ->filters([
-                //Filtrer les Factures avec surchage
                 Filter::make('Avec surchage')
                     ->query(fn(Builder $query): Builder => $query->where('type', 'Surcharge'))
                     ->toggle()
                     ->label('Avec surcharge (' . $this->getSurchargeWeightsCount() . ')'),
 
-                //Filtrer les Factures sans surchage
                 Filter::make('Sans surchage')
                     ->query(fn(Builder $query): Builder => $query->where('type', 'Normal'))
                     ->toggle()
                     ->label('Sans surcharge (' . $this->getNoSurchargeWeightsCount() . ')'),
 
-                //Filtrer les Factures payées
                 Filter::make('Payées')
                     ->query(fn(Builder $query): Builder => $query->where('statut', 'Payée'))
                     ->toggle()
                     ->label('Payées (' . $this->getPaidFactureCount() . ')'),
 
-                //Filtrer les Factures non payées
                 Filter::make('Non payées')
                     ->query(fn(Builder $query): Builder => $query->where('statut', 'En attente de paiement'))
                     ->toggle()
@@ -115,10 +115,14 @@ class ListFactures extends Component implements HasForms, HasTable
 
             ])
             ->actions([
-                // ...
+                // Export en PDF
+                Action::make('export_pdf')
+                    ->label('Exporter en PDF')
+                    ->action(function (FacturePesage $record) {
+                        return $this->exportFactureToPDF($record);
+                    })
             ])
             ->bulkActions([
-                //Export
                 ExportBulkAction::make()
                     ->exporter(FacturePesageExporter::class)
                     ->label('Exporter')
@@ -126,7 +130,6 @@ class ListFactures extends Component implements HasForms, HasTable
                         ExportFormat::Xlsx
                     ])
                     ->after(function () {
-                        // Enregistrement de l'export dans le journal
                         activity()
                             ->causedBy(auth()->user())
                             ->log('Export de factures effectuées au format Excel.');
@@ -134,28 +137,59 @@ class ListFactures extends Component implements HasForms, HasTable
             ]);
     }
 
-    // Méthode pour obtenir les Factures avec surcharges
     protected function getSurchargeWeightsCount(): int
     {
         return FacturePesage::where('type', 'Surcharge')->count();
     }
 
-    // Méthode pour obtenir les Factures sans surcharges
     protected function getNoSurchargeWeightsCount(): int
     {
         return FacturePesage::where('type', 'Normal')->count();
     }
 
-    // Méthode pour obtenir les Factures avec surcharges
     protected function getPaidFactureCount(): int
     {
         return FacturePesage::where('statut', 'Payée')->count();
     }
 
-    // Méthode pour obtenir les Factures sans surcharges
     protected function getNoPaidFactureCount(): int
     {
         return FacturePesage::where('statut', 'En attente de paiement')->count();
+    }
+
+    // Méthode pour exporter une facture en PDF
+    public function exportFactureToPDF(FacturePesage $facture)
+    {
+        $data = [
+            'facture' => $facture,
+        ];
+
+        $numero_facture = $facture->bon_pesee_id;
+        $typeFacture = $facture->type;
+        $forfait_usage = $facture->forfait_usage;
+        $montant_totalFacture = $facture->montant_total;
+        $statutFacture = $facture->statut;
+
+        $bon_pesee_id = $facture->bon_pesee_id;
+        $pv_id = $facture->pv_id;
+
+        // Recherchez le BonPesee correspondant
+        $bp = BonPesee::find($bon_pesee_id);
+
+
+        // Recherchez le PV correspondant
+        $pv = Pv::find($pv_id);
+
+        // Générer le PDF avec le facade PDF
+        $pdf = PDF::loadView('pdf.facture', [
+            'bp' => $bp,
+
+        ]);
+        // dd($bp);
+        // Télécharger le fichier PDF
+        return response()->streamDownload(function () use ($pdf) {
+            echo $pdf->stream();
+        }, 'facture_' . $facture->numero . '.pdf');
     }
 
     public function render()

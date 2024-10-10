@@ -18,16 +18,6 @@ Route::middleware([
 
     Route::get('/pesage', [PesageController::class, 'index'])->name('pesage');
 
-    Route::get('/chart-data', function () {
-        return [
-            'dataPesage' => \App\Models\BonPesee::count(),
-            'dataFacture' => \App\Models\FacturePesage::count(),
-            'dataFullFacture' => \App\Models\FacturePesage::count(),
-            'dataFactureBuy' => \App\Models\FacturePesage::where('statut', 'Payée')->count(),
-            'dataFactureNotBuy' => \App\Models\FacturePesage::where('statut', 'En attente de paiement')->count(),
-        ];
-    });
-
     Route::get('/dashboard/facturation', function () {
         return view('dashboard.facturation');
     })->name('facturation');
