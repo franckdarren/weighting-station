@@ -24,7 +24,7 @@ class BonPeseeFactory extends Factory
         $limite_poids = $vehicule->typeVehicule->limite_poids;
 
         // Génération d'un poids aléatoire qui respecte certaines conditions
-        $poids = $this->faker->numberBetween(30000, ($limite_poids + 15000));
+        $poids = $this->faker->numberBetween(70000, ($limite_poids + 25000));
 
         // Calcul de la surcharge
         $surcharge = 0;
