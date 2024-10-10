@@ -17,32 +17,24 @@
 
             <div class="relative">
                 <!-- <x-label for="email" value="{{ __('Email') }}" /> -->
-                <i class="fa-regular fa-user absolute inset-y-0 left-0 pl-3 pt-3 flex items-center pointer-events-none text-white"></i>
+                 
+                <i class="fa-regular fa-user absolute inset-y-0 left-0 pl-3 pt-3 flex items-center pointer-events-none text-black"></i>
                 <x-input placeholder="Nom d'utilisateur" id="email" class="block mt-1 w-full bg-transparent text-white placeholder-[#cfcfcf] pl-8" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
             </div>
 
             <div class="relative mt-4">
                 <!-- <x-label for="password" value="{{ __('Password') }}" /> -->
-                <i class="fas fa-lock absolute pl-3 pt-3 flex items-center pointer-events-none text-white"></i>
+                <i class="fas fa-lock absolute pl-3 pt-3 flex items-center pointer-events-none text-black"></i>
                 <x-input placeholder="Mot de passe" id="password" class="block mt-1 w-full bg-transparent text-white placeholder-[#cfcfcf] pl-8" type="password" name="password" required autocomplete="current-password" />
             </div>
-<<<<<<< HEAD
-            <div class="flex items-center justify-center mt-4">
+            <div class="flex items-center justify-end mt-8">
                 <!-- @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('password.request') }}">
-                    {{ __('Forgot your password?') }}
-                </a>
-                @endif -->
-=======
-            <div class="flex items-center justify-end mt-4">
-                @if (Route::has('password.request'))
                     <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('password.request') }}">
                         {{ __('Forgot your password?') }}
                     </a>
-                @endif
->>>>>>> 87fa986b4f87378203fd894eb01a8f1d8b7cc097
+                @endif -->
 
-                <x-button class="w-full shadow-md flex justify-center bg-white  hover:text-white hover:bg-[#2d699c] ">
+                <x-button class="w-full shadow-md flex justify-center   hover:text-white hover:bg-[#2d699c] ">
                     {{ __('Se connecter') }}
                 </x-button>
             </div>
