@@ -25,10 +25,12 @@ use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Actions\Exports\Enums\ExportFormat;
 use Filament\Tables\Concerns\InteractsWithTable;
 
+
 class ListFactures extends Component implements HasForms, HasTable
 {
     use InteractsWithTable;
     use InteractsWithForms;
+
 
     public function table(Table $table): Table
     {
@@ -122,7 +124,26 @@ class ListFactures extends Component implements HasForms, HasTable
                     ->label('Exporter en PDF')
                     ->action(function (FacturePesage $record) {
                         return $this->exportFactureToPDF($record);
+                    }),
+                Action::make('changer_statut')
+                    ->label('Changer statut')
+                    ->action(function (FacturePesage $record) {
+                        if ($record->statut === 'En attente de paiement') {
+                            $record->statut = 'Payée';
+                        } else {
+                            $record->statut = 'En attente de paiement';
+                        }
+
+                        $record->save();
+
+                        // Rafraîchir la table après mise à jour
+                        $this->dispatch('refreshTable');
+
+                        // Utiliser un message flash
+                        session()->flash('message', 'Le statut a été mis à jour avec succès !');
                     })
+                    ->requiresConfirmation()
+                    ->color('success')
             ])
             ->bulkActions([
                 ExportBulkAction::make()
