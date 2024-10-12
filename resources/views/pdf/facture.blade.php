@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 
 <head>
     <meta charset="UTF-8" />
-    <meta http-equiv="Content-Type" content="text/html" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Facture</title>
 </head>
@@ -147,28 +147,28 @@
 
     thead th:first-child {
         padding-left: 0.25rem;
-        text-align: left;
+        text-align: center;
     }
 
     thead th:last-child {
         padding-right: 0.25rem;
-        text-align: right;
+        text-align: center;
     }
 
     tbody td {
-        padding-left: 2rem;
-        padding-right: 2rem;
+        padding-left: 0.25rem;
+        padding-right: 0.25rem;
         padding-top: 0.4rem;
         padding-bottom: 0.4rem;
         text-align: center;
     }
 
     tbody td:first-child {
-        text-align: left;
+        text-align: center;
     }
 
     tbody td:last-child {
-        text-align: right;
+        text-align: center;
     }
 
     tfoot td {
@@ -182,7 +182,7 @@
     }
 
     tfoot td:last-child {
-        text-align: right;
+        text-align: center;
     }
 
     .first-line {
@@ -206,14 +206,13 @@
               color: #fff;
               width: 100%;
             ">
-                    Station de pesage de ndjole
+                    Station de pesage de Ndjole
                 </h1>
             </div>
             <h1
                 style="
-            align-items: center;
-            display: flex;
-            justify-content: center;
+            text-align: center;
+            
             margin-top: 10px;
             margin-bottom: 30px;
             background-color: #c4bebe;
@@ -222,43 +221,28 @@
           ">
                 Amende de constat d'infraction de surchage
             </h1>
-            <div
-                style="
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-          ">
+            <div>
                 <div class="head-invoice">
-                    <!-- <h4>Date : <span>9 août 2024</span></h4>
-            <h4 class="sub-title">
-              Amende de constat d'infraction de surcharge
-            </h4> -->
+
                     <div class="section-livraison">
                         <h4 class="sub-title">
-                            N°Bon de pesée : <span class="capitalize"> {{ $bp->numero }}</span>
+                            N°Bon de pesée : <span style="margin-right: 30%;" class="capitalize">
+                                {{ $bp->numero }}</span>
+                            Matricule vehicule: <span>{{ $vehicule->plaque_immatriculation }}</span>
                         </h4>
                         <h4 class="sub-title">
                             N° de pv de constat de surcharge :
-                            <span class="capitalize"> 2903</span>
+                            <span style="margin-right: 20%;"
+                                class="capitalize">{{ $pv->numero ?? '                  ' }}</span>Société :
+                            <span>{{ $vehicule->entreprise }}</span>
                         </h4>
-                    </div>
-                </div>
-
-                <div
-                    style="
-              display: flex;
-              justify-content: space-between;
-              align-items: center;
-            ">
-                    <div class="library-details">
-                        <h4>Matricule vehicule: <span>libraryName</span></h4>
-                        <h4>Société : <span>libraryName</span></h4>
                         <h4>
-                            Nom et prénom du chauffeur : <span>libraryName</span>
+                            Nom et prénom du chauffeur : <span style="margin-right: 20%;">{{ $conducteur->nom }}
+                                {{ $conducteur->prenoms }}</span>
+                            Provenance : <span>{{ $bp->provenance }}</span>
                         </h4>
-                        <h4>Provenance : <span>libraryName</span></h4>
-                        <h4>Destination : <span>libraryName</span></h4>
-                        <h4>Produit transporté : <span>libraryName</span></h4>
+                        <h4>Destination : <span style="margin-right: 30%;">{{ $bp->destination }}</span>
+                            Produit transporté : <span>{{ $bp->produits_transportes }}</span></h4>
                     </div>
                 </div>
             </div>
@@ -303,23 +287,30 @@
                             </tr>
                             <tr>
                                 <td>1</td>
-                                <td>27720</td>
+                                <td>{{ $ge1 }}</td>
                                 <td>22000</td>
-                                <td>5720</td>
-                                <td>429,000</td>
+                                <td>{{ max($ge1 - 22000, 0) }}</td>
+                                <td>{{ number_format(max($ge1 - 22000, 0) * 75, 0, ',', ' ') }}</td>
                             </tr>
                             <tr>
                                 <td>1</td>
-                                <td>27720</td>
+                                <td>{{ $ge2 }}</td>
                                 <td>22000</td>
-                                <td>5720</td>
-                                <td>429,000</td>
+                                <td>{{ max($ge2 - 22000, 0) }}</td>
+                                <td>{{ number_format(max($ge2 - 22000, 0) * 75, 0, ',', ' ') }}</td>
+                            </tr>
+                            <tr>
+                                <td>1</td>
+                                <td>{{ $ge3 }}</td>
+                                <td>22000</td>
+                                <td>{{ max($ge3 - 22000, 0) }}</td>
+                                <td>{{ number_format(max($ge3 - 22000, 0) * 75, 0, ',', ' ') }}</td>
                             </tr>
                         </tbody>
                     </table>
                     <table border="2">
                         <thead>
-                            <td style="background-color: #fff"></td>
+                            <td style="background-color: #f5f1f1"></td>
                             <th colspan="5">Contrôle a l'essieu</th>
                         </thead>
                         <tbody>
@@ -334,58 +325,58 @@
                             <tr>
                                 <td>1</td>
                                 <td>1</td>
-                                <td>27720</td>
-                                <td>22000</td>
-                                <td>5720</td>
-                                <td>429,000</td>
+                                <td>{{ $bp->poids_E1 }}</td>
+                                <td>14000</td>
+                                <td>{{ max($bp->poids_E1 - 14000, 0) }}</td>
+                                <td>{{ number_format(max($bp->poids_E1 - 14000, 0) * 75, 0, ',', ' ') }}</td>
                             </tr>
                             <tr>
                                 <td>1</td>
-                                <td>27720</td>
-                                <td>22000</td>
-                                <td>5720</td>
-                                <td>429,000</td>
-                                <td>429,000</td>
+                                <td>2</td>
+                                <td>{{ $bp->poids_E2 }}</td>
+                                <td>14000</td>
+                                <td>{{ max($bp->poids_E2 - 14000, 0) }}</td>
+                                <td>{{ number_format(max($bp->poids_E2 - 14000, 0) * 75, 0, ',', ' ') }}</td>
                             </tr>
                             <tr>
                                 <td>1</td>
-                                <td>27720</td>
-                                <td>22000</td>
-                                <td>5720</td>
-                                <td>429,000</td>
-                                <td>429,000</td>
+                                <td>3</td>
+                                <td>{{ $bp->poids_E3 }}</td>
+                                <td>14000</td>
+                                <td>{{ max($bp->poids_E3 - 14000, 0) }}</td>
+                                <td>{{ number_format(max($bp->poids_E3 - 14000, 0) * 75, 0, ',', ' ') }}</td>
                             </tr>
                             <tr>
                                 <td>1</td>
-                                <td>27720</td>
-                                <td>22000</td>
-                                <td>5720</td>
-                                <td>429,000</td>
-                                <td>429,000</td>
+                                <td>4</td>
+                                <td>{{ $bp->poids_E4 }}</td>
+                                <td>14000</td>
+                                <td>{{ max($bp->poids_E4 - 14000, 0) }}</td>
+                                <td>{{ number_format(max($bp->poids_E4 - 14000, 0) * 75, 0, ',', ' ') }}</td>
                             </tr>
                             <tr>
                                 <td>1</td>
-                                <td>27720</td>
-                                <td>22000</td>
-                                <td>5720</td>
-                                <td>429,000</td>
-                                <td>429,000</td>
+                                <td>5</td>
+                                <td>{{ $bp->poids_E5 }}</td>
+                                <td>14000</td>
+                                <td>{{ max($bp->poids_E5 - 14000, 0) }}</td>
+                                <td>{{ number_format(max($bp->poids_E5 - 14000, 0) * 75, 0, ',', ' ') }}</td>
                             </tr>
                             <tr>
                                 <td>1</td>
-                                <td>27720</td>
-                                <td>22000</td>
-                                <td>5720</td>
-                                <td>429,000</td>
-                                <td>429,000</td>
+                                <td>6</td>
+                                <td>{{ $bp->poids_E6 }}</td>
+                                <td>14000</td>
+                                <td>{{ max($bp->poids_E6 - 14000, 0) }}</td>
+                                <td>{{ number_format(max($bp->poids_E6 - 14000, 0) * 75, 0, ',', ' ') }}</td>
                             </tr>
                             <tr>
-                                <td>1</td>
-                                <td>27720</td>
-                                <td>22000</td>
-                                <td>5720</td>
-                                <td>429,000</td>
-                                <td>429,000</td>
+                                <td>0</td>
+                                <td>7</td>
+                                <td>0</td>
+                                <td>14000</td>
+                                <td>0</td>
+                                <td>0</td>
                             </tr>
                             <tr>
                                 <td style="text-align: center">Type : 5</td>
@@ -394,24 +385,51 @@
                         </tbody>
                     </table>
                 </div>
-                <div
-                    style="display: flex; flex-direction: column; justify-content: end; width: 100%; align-items: end;">
-                    <table style="width: 50%" border="2">
+                <div>
+                    <table style="margin-left: 50%; width: 50%" border="2">
                         <thead>
                             <th colspan="5">Total Facture</th>
                         </thead>
                         <tbody>
                             <td>Forfait d'usage: 8500</td>
                             <tr>
-                                <td>Amendes: 1,298,250</td>
+                                <td>Amendes:
+                                    {{ number_format(
+                                        max($bp->poids_E6 - 14000, 0) * 75 +
+                                            max($bp->poids_E5 - 14000, 0) * 75 +
+                                            max($bp->poids_E4 - 14000, 0) * 75 +
+                                            max($bp->poids_E3 - 14000, 0) * 75 +
+                                            max($bp->poids_E2 - 14000, 0) * 75 +
+                                            max($bp->poids_E1 - 14000, 0) * 75,
+                                        0,
+                                        ',',
+                                        ' ',
+                                    ) }}
+
+                                </td>
                             </tr>
                             <tr>
-                                <td>Net à payer1,306,750 xaf ttc</td>
+                                <td>Net à payer:
+                                    {{ number_format(
+                                        max($bp->poids_E6 - 14000, 0) * 75 +
+                                            max($bp->poids_E5 - 14000, 0) * 75 +
+                                            max($bp->poids_E4 - 14000, 0) * 75 +
+                                            max($bp->poids_E3 - 14000, 0) * 75 +
+                                            max($bp->poids_E2 - 14000, 0) * 75 +
+                                            max($bp->poids_E1 - 14000, 0) * 75 +
+                                            8500,
+                                        0,
+                                        ',',
+                                        ' ',
+                                    ) }}
+
+                                    XAF TTC</td>
                             </tr>
                         </tbody>
                     </table>
 
-                    <h3 style="margin-top: 20px">Etabli a ndjole, le 23/09/2024</h3>
+                    <h3 style="margin-left: 50%; margin-top: 20px">Etabli a Ndjole, le
+                        {{ \Carbon\Carbon::now()->format('d/m/Y') }}</h3>
                 </div>
             </div>
         </div>
