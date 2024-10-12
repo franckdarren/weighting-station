@@ -124,10 +124,19 @@ class ListFactures extends Component implements HasForms, HasTable
                     ->label('Exporter en PDF')
                     ->action(function (FacturePesage $record) {
                         return $this->exportFactureToPDF($record);
+                    })
+                    ->after(function () {
+                        activity()
+                            ->causedBy(auth()->user())
+                            ->log('Facture exportés au format Excel.');
                     }),
+                // Changement de statut de la facture    
                 Action::make('changer_statut')
                     ->label('Changer statut')
                     ->action(function (FacturePesage $record) {
+                        $ancienStatut = $record->statut;  // Enregistrer l'ancien statut
+
+                        // Changer le statut de la facture
                         if ($record->statut === 'En attente de paiement') {
                             $record->statut = 'Payée';
                         } else {
@@ -135,6 +144,17 @@ class ListFactures extends Component implements HasForms, HasTable
                         }
 
                         $record->save();
+
+                        // Enregistrer l'action dans le journal avec Spatie Activitylog
+                        activity()
+                            ->causedBy(auth()->user())
+                            ->performedOn($record)
+                            ->withProperties([
+                                'ancien_statut' => $ancienStatut,
+                                'nouveau_statut' => $record->statut,
+                                'facture_code' => $record->numero,
+                            ])
+                            ->log("Le statut de la facture $record->numero a été changé de $ancienStatut à $record->statut"); // Description de l'action
 
                         // Rafraîchir la table après mise à jour
                         $this->dispatch('refreshTable');
@@ -144,6 +164,7 @@ class ListFactures extends Component implements HasForms, HasTable
                     })
                     ->requiresConfirmation()
                     ->color('success')
+
             ])
             ->bulkActions([
                 ExportBulkAction::make()
