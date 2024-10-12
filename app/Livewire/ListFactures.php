@@ -2,13 +2,17 @@
 
 namespace App\Livewire;
 
+use App\Models\Pv;
 use Livewire\Component;
-use PDF; // Utilisation du facade PDF
+use App\Models\BonPesee;
+use App\Models\Vehicule;
+use App\Models\Conducteur;
 use Filament\Tables\Table;
 use App\Models\FacturePesage;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Filters\Filter;
 use Illuminate\Contracts\View\View;
+use PDF; // Utilisation du facade PDF
 use Filament\Forms\Contracts\HasForms;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Contracts\HasTable;
@@ -17,8 +21,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Filament\Tables\Actions\ExportBulkAction;
 use App\Filament\Exports\FacturePesageExporter;
-use App\Models\BonPesee;
-use App\Models\Pv;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Actions\Exports\Enums\ExportFormat;
 use Filament\Tables\Concerns\InteractsWithTable;
@@ -180,9 +182,31 @@ class ListFactures extends Component implements HasForms, HasTable
         // Recherchez le PV correspondant
         $pv = Pv::find($pv_id);
 
+        // Recherchez le Véhicule correspondant
+        $vehicule = Vehicule::find($bp->vehicule_id);
+
+        // Recherchez le Conducteur correspondant
+        $conducteur = Conducteur::find($bp->conducteur_id);
+
+        // Groupes essieux
+        $ge1 = $bp->poids_E1;
+        $ge2 = $bp->poids_E2 + $bp->poids_E3 + $bp->poids_E4;
+        $ge3 = $bp->poids_E5 + $bp->poids_E6;
+
+
+
         // Générer le PDF avec le facade PDF
         $pdf = PDF::loadView('pdf.facture', [
             'bp' => $bp,
+            'pv' => $pv,
+            'vehicule' => $vehicule,
+            'conducteur' => $conducteur,
+            'ge1' => $ge1,
+            'ge2' => $ge2,
+            'ge3' => $ge3,
+
+
+
 
         ]);
         // dd($bp);
