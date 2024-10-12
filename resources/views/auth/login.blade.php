@@ -15,16 +15,16 @@
         <form method="POST" action="{{ route('login') }}">
             @csrf
 
-            <div class="relative">
+            <div class="relative flex items-center">
                 <!-- <x-label for="email" value="{{ __('Email') }}" /> -->
                  
-                <i class="fa-regular fa-user absolute inset-y-0 left-0 pl-3 pt-3 flex items-center pointer-events-none text-black"></i>
+                <svg class="absolute pl-2" xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" viewBox="0 0 24 24"><path fill="white" d="M12 4a4 4 0 0 1 4 4a4 4 0 0 1-4 4a4 4 0 0 1-4-4a4 4 0 0 1 4-4m0 10c4.42 0 8 1.79 8 4v2H4v-2c0-2.21 3.58-4 8-4"/></svg>
                 <x-input placeholder="Nom d'utilisateur" id="email" class="block mt-1 w-full bg-transparent text-white placeholder-[#cfcfcf] pl-8" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
             </div>
 
-            <div class="relative mt-4">
+            <div class="relative flex items-center mt-4">
                 <!-- <x-label for="password" value="{{ __('Password') }}" /> -->
-                <i class="fas fa-lock absolute pl-3 pt-3 flex items-center pointer-events-none text-black"></i>
+                <svg class="absolute pl-2" xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" viewBox="0 0 24 24"><path fill="white" d="M12 17a2 2 0 0 1-2-2c0-1.11.89-2 2-2a2 2 0 0 1 2 2a2 2 0 0 1-2 2m6 3V10H6v10zm0-12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V10c0-1.11.89-2 2-2h1V6a5 5 0 0 1 5-5a5 5 0 0 1 5 5v2zm-6-5a3 3 0 0 0-3 3v2h6V6a3 3 0 0 0-3-3"/></svg>
                 <x-input placeholder="Mot de passe" id="password" class="block mt-1 w-full bg-transparent text-white placeholder-[#cfcfcf] pl-8" type="password" name="password" required autocomplete="current-password" />
             </div>
             <div class="flex items-center justify-end mt-8">
