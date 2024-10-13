@@ -23,6 +23,13 @@ final class BonPeseeExporter extends Exporter
             ExportColumn::make('poids'),
             ExportColumn::make('surchage'),
             ExportColumn::make('vitesse'),
+            ExportColumn::make('poids_E1'),
+            ExportColumn::make('poids_E2'),
+            ExportColumn::make('poids_E3'),
+            ExportColumn::make('poids_E4'),
+            ExportColumn::make('poids_E5'),
+            ExportColumn::make('poids_E6'),
+
             ExportColumn::make('vehicule_id'),
             ExportColumn::make('conducteur_id'),
         ];

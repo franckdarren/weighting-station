@@ -1,3 +1,6 @@
+<!-- Tableau des factures -->
 <x-app-layout>
-    <h1>Page de la caisse</h1>
+    <div class="px-[5%] my-10">
+        @livewire('list-caisse')
+    </div>
 </x-app-layout>

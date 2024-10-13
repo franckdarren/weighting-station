@@ -2,8 +2,8 @@
 
 namespace App\Livewire;
 
-use App\Models\Pv;
 use Livewire\Component;
+use App\Models\Pv;
 use App\Models\BonPesee;
 use App\Models\Vehicule;
 use App\Models\Conducteur;
@@ -25,8 +25,7 @@ use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Actions\Exports\Enums\ExportFormat;
 use Filament\Tables\Concerns\InteractsWithTable;
 
-
-class ListFactures extends Component implements HasForms, HasTable
+class ListCaisse extends Component implements HasForms, HasTable
 {
     use InteractsWithTable;
     use InteractsWithForms;
@@ -120,50 +119,50 @@ class ListFactures extends Component implements HasForms, HasTable
             ])
             ->actions([
                 // Export en PDF
-                // Action::make('export_pdf')
-                //     ->label('Exporter en PDF')
-                //     ->action(function (FacturePesage $record) {
-                //         return $this->exportFactureToPDF($record);
-                //     })
-                //     ->after(function () {
-                //         activity()
-                //             ->causedBy(auth()->user())
-                //             ->log('Facture exportés au format Excel.');
-                //     }),
-                // // Changement de statut de la facture    
-                // Action::make('changer_statut')
-                //     ->label('Changer statut')
-                //     ->action(function (FacturePesage $record) {
-                //         $ancienStatut = $record->statut;  // Enregistrer l'ancien statut
+                Action::make('export_pdf')
+                    ->label('Exporter en PDF')
+                    ->action(function (FacturePesage $record) {
+                        return $this->exportFactureToPDF($record);
+                    })
+                    ->after(function () {
+                        activity()
+                            ->causedBy(auth()->user())
+                            ->log('Facture exportés au format Excel.');
+                    }),
+                // Changement de statut de la facture    
+                Action::make('changer_statut')
+                    ->label('Changer statut')
+                    ->action(function (FacturePesage $record) {
+                        $ancienStatut = $record->statut;  // Enregistrer l'ancien statut
 
-                //         // Changer le statut de la facture
-                //         if ($record->statut === 'En attente de paiement') {
-                //             $record->statut = 'Payée';
-                //         } else {
-                //             $record->statut = 'En attente de paiement';
-                //         }
+                        // Changer le statut de la facture
+                        if ($record->statut === 'En attente de paiement') {
+                            $record->statut = 'Payée';
+                        } else {
+                            $record->statut = 'En attente de paiement';
+                        }
 
-                //         $record->save();
+                        $record->save();
 
-                //         // Enregistrer l'action dans le journal avec Spatie Activitylog
-                //         activity()
-                //             ->causedBy(auth()->user())
-                //             ->performedOn($record)
-                //             ->withProperties([
-                //                 'ancien_statut' => $ancienStatut,
-                //                 'nouveau_statut' => $record->statut,
-                //                 'facture_code' => $record->numero,
-                //             ])
-                //             ->log("Le statut de la facture $record->numero a été changé de $ancienStatut à $record->statut"); // Description de l'action
+                        // Enregistrer l'action dans le journal avec Spatie Activitylog
+                        activity()
+                            ->causedBy(auth()->user())
+                            ->performedOn($record)
+                            ->withProperties([
+                                'ancien_statut' => $ancienStatut,
+                                'nouveau_statut' => $record->statut,
+                                'facture_code' => $record->numero,
+                            ])
+                            ->log("Le statut de la facture $record->numero a été changé de $ancienStatut à $record->statut"); // Description de l'action
 
-                //         // Rafraîchir la table après mise à jour
-                //         $this->dispatch('refreshTable');
+                        // Rafraîchir la table après mise à jour
+                        $this->dispatch('refreshTable');
 
-                //         // Utiliser un message flash
-                //         session()->flash('message', 'Le statut a été mis à jour avec succès !');
-                //     })
-                //     ->requiresConfirmation()
-                //     ->color('success')
+                        // Utiliser un message flash
+                        session()->flash('message', 'Le statut a été mis à jour avec succès !');
+                    })
+                    ->requiresConfirmation()
+                    ->color('success')
 
             ])
             ->bulkActions([
@@ -258,8 +257,9 @@ class ListFactures extends Component implements HasForms, HasTable
         }, 'facture_' . $facture->numero . '.pdf');
     }
 
+
     public function render()
     {
-        return view('livewire.list-factures');
+        return view('livewire.list-caisse');
     }
 }
