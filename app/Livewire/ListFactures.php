@@ -173,6 +173,7 @@ class ListFactures extends Component implements HasForms, HasTable
                     ->formats([
                         ExportFormat::Xlsx
                     ])
+                    ->visible(auth()->user()->can('edit factures'))  // Masquer si l'utilisateur n'a pas la permission
                     ->after(function () {
                         activity()
                             ->causedBy(auth()->user())

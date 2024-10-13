@@ -124,11 +124,14 @@ class ListCaisse extends Component implements HasForms, HasTable
                     ->action(function (FacturePesage $record) {
                         return $this->exportFactureToPDF($record);
                     })
+                    ->visible(fn() => auth()->user()->can('edit factures')) // Masquer pour les utilisateurs sans cette permission
                     ->after(function () {
                         activity()
                             ->causedBy(auth()->user())
-                            ->log('Facture exportés au format Excel.');
+                            ->log('Facture exportée au format PDF.'); // Correction du message
                     }),
+
+
                 // Changement de statut de la facture    
                 Action::make('changer_statut')
                     ->label('Changer statut')
@@ -172,6 +175,7 @@ class ListCaisse extends Component implements HasForms, HasTable
                     ->formats([
                         ExportFormat::Xlsx
                     ])
+                    ->visible(fn() => auth()->user()->can('edit factures')) // Masquer pour les utilisateurs sans cette permission
                     ->after(function () {
                         activity()
                             ->causedBy(auth()->user())

@@ -140,11 +140,10 @@ class ListPesages extends Component implements HasForms, HasTable
                 // ...
             ])
             ->bulkActions([
-                //Export
                 ExportBulkAction::make()
                     ->exporter(BonPeseeExporter::class)
                     ->label('Exporter')
-
+                    ->visible(auth()->user()->can('edit pesée'))  // Masquer si l'utilisateur n'a pas la permission
                     ->after(function () {
                         // Enregistrement de l'export dans le journal
                         activity()
