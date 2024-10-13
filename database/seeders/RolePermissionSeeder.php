@@ -31,6 +31,14 @@ class RolePermissionSeeder extends Seeder
         $deleteFactures = Permission::where('name', 'delete factures')->first();
         $viewFactures = Permission::where('name', 'view factures')->first();
 
+        $viewCaisses = Permission::where('name', 'view caisses')->first();
+        $editCaisses = Permission::where('name', 'edit caisses')->first();
+
+        $viewRapports = Permission::where('name', 'view rapports')->first();
+        $editRapports = Permission::where('name', 'edit rapports')->first();
+
+        $viewReglementations = Permission::where('name', 'view reglementations')->first();
+
         $createPesée = Permission::where('name', 'create pesée')->first();
         $editPesée = Permission::where('name', 'edit pesée')->first();
         $deletePesée = Permission::where('name', 'delete pesée')->first();
@@ -52,6 +60,14 @@ class RolePermissionSeeder extends Seeder
             $editPesée,
             $deletePesée,
             $viewPesée,
+
+            $viewCaisses,
+            $editCaisses,
+
+            $viewRapports,
+            $editRapports,
+
+            $viewReglementations,
         ]);
 
         $operateurPrimaire->givePermissionTo([
@@ -60,9 +76,12 @@ class RolePermissionSeeder extends Seeder
 
         $operateurFacture->givePermissionTo([
             $viewFactures,
-            $editFactures
         ]);
 
-        $operateurCaisse->givePermissionTo([]);
+        $operateurCaisse->givePermissionTo([
+            $viewCaisses,
+            $editCaisses,
+
+        ]);
     }
 }

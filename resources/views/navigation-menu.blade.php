@@ -56,41 +56,57 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
                 </div> -->
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link href="{{ route('pesage') }}" :active="request()->routeIs('pesage')"
-                        class="{{ request()->routeIs('pesage') ? 'text-black' : 'text-white hover:text-gray-300' }}">
-                        <i class="fa-solid fa-truck me-1"></i>
-                        {{ __('Pesage') }}
-                    </x-nav-link>
-                </div>
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link href="{{ route('facturation') }}" :active="request()->routeIs('facturation')"
-                        class="{{ request()->routeIs('facturation') ? 'text-black' : 'text-white hover:text-gray-300' }}">
-                        <i class="fa-solid fa-paste me-1"></i>
-                        {{ __('Facturation') }}
-                    </x-nav-link>
-                </div>
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link href="{{ route('caisse') }}" :active="request()->routeIs('caisse')"
-                        class="{{ request()->routeIs('caisse') ? 'text-black' : 'text-white hover:text-gray-300' }}">
-                        <i class="fa-solid fa-box me-1"></i>
-                        {{ __('Caisse') }}
-                    </x-nav-link>
-                </div>
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link href="{{ route('rapport') }}" :active="request()->routeIs('rapport')"
-                        class="{{ request()->routeIs('rapport') ? 'text-black' : 'text-white hover:text-gray-300' }}">
-                        <i class="fa-solid fa-clipboard-list me-1"></i>
-                        {{ __('Rapport') }}
-                    </x-nav-link>
-                </div>
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link href="{{ route('texteReglementation') }}" :active="request()->routeIs('texteReglementation')"
-                        class="{{ request()->routeIs('texteReglementation') ? 'text-black' : 'text-white hover:text-gray-300' }}">
-                        <i class="fa-solid fa-file me-1"></i>
-                        {{ __('Texte de reglementation') }}
-                    </x-nav-link>
-                </div>
+                @can('view pesée')
+                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                        <x-nav-link href="{{ route('pesage') }}" :active="request()->routeIs('pesage')"
+                            class="{{ request()->routeIs('pesage') ? 'text-black' : 'text-white hover:text-gray-300' }}">
+                            <i class="fa-solid fa-truck me-1"></i>
+                            {{ __('Pesage') }}
+                        </x-nav-link>
+                    </div>
+                @endcan
+
+                @can('view factures')
+                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                        <x-nav-link href="{{ route('facturation') }}" :active="request()->routeIs('facturation')"
+                            class="{{ request()->routeIs('facturation') ? 'text-black' : 'text-white hover:text-gray-300' }}">
+                            <i class="fa-solid fa-paste me-1"></i>
+                            {{ __('Facturation') }}
+                        </x-nav-link>
+                    </div>
+                @endcan
+
+                @can('view caisses')
+                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                        <x-nav-link href="{{ route('caisse') }}" :active="request()->routeIs('caisse')"
+                            class="{{ request()->routeIs('caisse') ? 'text-black' : 'text-white hover:text-gray-300' }}">
+                            <i class="fa-solid fa-box me-1"></i>
+                            {{ __('Caisse') }}
+                        </x-nav-link>
+                    </div>
+                @endcan
+
+                @can('view rapports')
+                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                        <x-nav-link href="{{ route('rapport') }}" :active="request()->routeIs('rapport')"
+                            class="{{ request()->routeIs('rapport') ? 'text-black' : 'text-white hover:text-gray-300' }}">
+                            <i class="fa-solid fa-clipboard-list me-1"></i>
+                            {{ __('Rapport') }}
+                        </x-nav-link>
+                    </div>
+                @endcan
+
+
+                @can('view reglementations')
+                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                        <x-nav-link href="{{ route('texteReglementation') }}" :active="request()->routeIs('texteReglementation')"
+                            class="{{ request()->routeIs('texteReglementation') ? 'text-black' : 'text-white hover:text-gray-300' }}">
+                            <i class="fa-solid fa-file me-1"></i>
+                            {{ __('Texte de reglementation') }}
+                        </x-nav-link>
+                    </div>
+                @endcan
+
             </div>
 
             <div class="hidden sm:flex sm:items-center sm:ms-6">
