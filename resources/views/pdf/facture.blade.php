@@ -23,9 +23,9 @@
 
     body {
         font-family: "Poppins", sans-serif;
-        font-size: 0.8rem;
+        font-size: 0.7rem;
         font-weight: 400;
-        line-height: 0.85rem;
+        line-height: 0.75rem;
         color: #212529;
         /* text-align: left;
         padding: 15px; */
@@ -35,22 +35,22 @@
         /* max-width: 1473px; */
         width: calc(100% - 40px);
         margin: 0 auto;
-        padding: 0 20px !important;
+        padding: 0 5px !important;
     }
 
     .container {
         /* max-width: 900px; */
         width: 100%;
         margin-inline: auto;
-        padding: 1.25rem 0;
+        
         position: relative;
     }
 
     h1 {
-        padding-top: 0.5rem;
-        padding-bottom: 0.5rem;
-        font-size: 1rem;
-        line-height: 1.5rem;
+        padding-top: 0.25rem;
+        padding-bottom: 0.25rem;
+        font-size: 0.80rem;
+        line-height: 1rem;
         font-weight: 500;
         color: #5a5230;
         /* height: 130px; */
@@ -62,20 +62,17 @@
     }
 
     .informations-library-user div {
-        padding: 0 8px;
+        padding: 0 4px;
         display: inline-block;
     }
 
     .informations-library-user,
     .section-livraison {
-        padding: 0.5rem 0;
+        padding: 0.10rem 0;
         /* border-top: 1.5px solid #eeeeee; */
     }
 
-    .head-invoice {
-        padding-bottom: 0.5rem;
-    }
-
+    
     .uppercase {
         text-transform: uppercase;
     }
@@ -85,9 +82,9 @@
     }
 
     .sub-title {
-        font-size: 0.94rem;
-        line-height: 1.25rem;
-        font-weight: 500;
+        font-size: 0.64rem;
+        line-height: 0.5rem;
+        font-weight: 400;
         color: #212121;
     }
 
@@ -100,13 +97,13 @@
 
     .sub-title span {
         color: #9e9e9e;
-        font-weight: 400;
+        font-weight: 300;
     }
 
-    .section-table {
+    /* .section-table {
         margin-top: 1 rem;
         border-top: 1.5px solid #eeeeee;
-    }
+    } */
 
     h4 {
         font-weight: 400;
@@ -214,7 +211,7 @@
             text-align: center;
             
             margin-top: 10px;
-            margin-bottom: 30px;
+            margin-bottom: 10px;
             background-color: #c4bebe;
             color: #000;
             width: 100%;
@@ -247,7 +244,7 @@
                 </div>
             </div>
 
-            <div class="section-table">
+            <div class="">
                 <div class="main-table">
                     <table border="2">
                         <thead>
@@ -386,7 +383,7 @@
                     </table>
                 </div>
                 <div>
-                    <table style="margin-left: 50%; width: 50%" border="2">
+                    <table style="margin-left: 30%; width: 70%" border="2">
                         <thead>
                             <th colspan="5">Total Facture</th>
                         </thead>
