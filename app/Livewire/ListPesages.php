@@ -2,21 +2,23 @@
 
 namespace App\Livewire;
 
-use App\Filament\Exports\BonPeseeExporter;
+use App\Filament\Imports\BonPeseeImporter;
 use Livewire\Component;
 use App\Models\BonPesee;
-use Filament\Actions\Exports\Enums\ExportFormat;
 use Filament\Tables\Table;
+use Filament\Tables\Filters\Filter;
 use Illuminate\Contracts\View\View;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Contracts\HasTable;
-use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Tables\Actions\ExportAction;
-use Filament\Tables\Concerns\InteractsWithTable;
-use Filament\Tables\Filters\Filter;
+use Filament\Tables\Actions\ImportAction;
 use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Exports\BonPeseeExporter;
 use Filament\Tables\Actions\ExportBulkAction;
+use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Actions\Exports\Enums\ExportFormat;
+use Filament\Tables\Concerns\InteractsWithTable;
 
 class ListPesages extends Component implements HasForms, HasTable
 {
@@ -26,6 +28,11 @@ class ListPesages extends Component implements HasForms, HasTable
     public function table(Table $table): Table
     {
         return $table
+            ->headerActions([
+                ImportAction::make()
+                    ->importer(BonPeseeImporter::class)
+                    ->label('Importer Fichier CSV')
+            ])
             ->query(BonPesee::query())
             ->columns([
                 TextColumn::make('numero')->searchable()->sortable(),
@@ -86,6 +93,18 @@ class ListPesages extends Component implements HasForms, HasTable
                     ->label("Numéro PI")->searchable()
                     ->badge()
                     ->color('gray'),
+                TextColumn::make('poids_E1')
+                    ->label("Poids E1"),
+                TextColumn::make('poids_E2')
+                    ->label("Poids E2"),
+                TextColumn::make('poids_E3')
+                    ->label("Poids E3"),
+                TextColumn::make('poids_E4')
+                    ->label("Poids E4"),
+                TextColumn::make('poids_E5')
+                    ->label("Poids E5"),
+                TextColumn::make('poids_E6')
+                    ->label("Poids E6"),
                 TextColumn::make('created_at')
                     ->since()
                     ->dateTimeTooltip()
@@ -121,13 +140,10 @@ class ListPesages extends Component implements HasForms, HasTable
                 // ...
             ])
             ->bulkActions([
-                //Export
                 ExportBulkAction::make()
                     ->exporter(BonPeseeExporter::class)
                     ->label('Exporter')
-                    ->formats([
-                        ExportFormat::Xlsx
-                    ])
+                    ->visible(auth()->user()->can('edit pesée'))  // Masquer si l'utilisateur n'a pas la permission
                     ->after(function () {
                         // Enregistrement de l'export dans le journal
                         activity()

@@ -30,5 +30,23 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'edit pesée']);
         Permission::create(['name' => 'delete pesée']);
         Permission::create(['name' => 'view pesée']);
+
+        // Rapport
+        Permission::create(['name' => 'create rapports']);
+        Permission::create(['name' => 'edit rapports']);
+        Permission::create(['name' => 'delete rapports']);
+        Permission::create(['name' => 'view rapports']);
+
+        // Caisse
+        Permission::create(['name' => 'create caisses']);
+        Permission::create(['name' => 'edit caisses']);
+        Permission::create(['name' => 'delete caisses']);
+        Permission::create(['name' => 'view caisses']);
+
+        // Réglémentations
+        Permission::create(['name' => 'create reglementations']);
+        Permission::create(['name' => 'edit reglementations']);
+        Permission::create(['name' => 'delete reglementations']);
+        Permission::create(['name' => 'view reglementations']);
     }
 }
