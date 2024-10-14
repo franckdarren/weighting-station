@@ -107,6 +107,16 @@
                     </div>
                 @endcan
 
+                @can('edit users')
+                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                        <x-nav-link href="{{ route('users') }}" :active="request()->routeIs('users')"
+                            class="{{ request()->routeIs('users') ? 'text-black' : 'text-white hover:text-gray-300' }}">
+                            <i class="fa-solid fa-file me-1"></i>
+                            {{ __('Gestion des utilisateurs') }}
+                        </x-nav-link>
+                    </div>
+                @endcan
+
             </div>
 
             <div class="hidden sm:flex sm:items-center sm:ms-6">
@@ -174,7 +184,8 @@
                                 <button
                                     class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition">
                                     <img class="h-8 w-8 rounded-full object-cover"
-                                        src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
+                                        src="{{ Auth::user()->profile_photo_url }}"
+                                        alt="{{ Auth::user()->name }}" />
                                 </button>
                             @else
                                 <span class="inline-flex rounded-md">

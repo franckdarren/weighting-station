@@ -19,6 +19,8 @@ class RolePermissionSeeder extends Seeder
         $operateurPrimaire = Role::where('name', 'Opérateur primaire')->first();
         $operateurFacture = Role::where('name', 'Opérateur facture')->first();
         $operateurCaisse = Role::where('name', 'Opérateur caisse')->first();
+        $administrateur = Role::where('name', 'Administrateur')->first();
+
 
         // Récupérer les permissions
         $createUsers = Permission::where('name', 'create users')->first();
@@ -46,11 +48,6 @@ class RolePermissionSeeder extends Seeder
 
         // Assigner des permissions aux rôles
         $manager->givePermissionTo([
-            $createUsers,
-            $editUsers,
-            $deleteUsers,
-            $viewUsers,
-
             $createFactures,
             $editFactures,
             $deleteFactures,
@@ -82,6 +79,13 @@ class RolePermissionSeeder extends Seeder
             $viewCaisses,
             $editCaisses,
 
+        ]);
+
+        $administrateur->givePermissionTo([
+            $createUsers,
+            $editUsers,
+            $deleteUsers,
+            $viewUsers,
         ]);
     }
 }

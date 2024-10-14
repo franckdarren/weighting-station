@@ -77,5 +77,21 @@ class ManagerUserSeeder extends Seeder
         } else {
             $this->command->error('Le rôle Opérateur caisse n\'existe pas dans la base de données.');
         }
+
+        // Créer l'utilisateur Administrateur
+        $caisse = User::create([
+            'name' => 'Administrateur',
+            'code' => 'Admin',
+            'email' => 'admin@admin.com',
+            'password' => bcrypt('password'), // Changez le mot de passe si nécessaire
+        ]);
+
+        $role = Role::where('name', 'Administrateur')->first();
+
+        if ($role) {
+            $caisse->assignRole($role);
+        } else {
+            $this->command->error('Le rôle Opérateur Administrateur n\'existe pas dans la base de données.');
+        }
     }
 }
