@@ -243,7 +243,7 @@
                     </div>
                     <br>
 
-                    <p>Opérateur : {{ Auth::user()->name }}</p>
+                    <p>Opérateur : {{ Auth::user()->code }}</p>
 
                 </div>
             </div>
