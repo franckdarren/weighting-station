@@ -42,7 +42,7 @@
         /* max-width: 900px; */
         width: 100%;
         margin-inline: auto;
-        
+
         position: relative;
     }
 
@@ -72,7 +72,7 @@
         /* border-top: 1.5px solid #eeeeee; */
     }
 
-    
+
     .uppercase {
         text-transform: uppercase;
     }
@@ -241,6 +241,10 @@
                         <h4>Destination : <span style="margin-right: 30%;">{{ $bp->destination }}</span>
                             Produit transporté : <span>{{ $bp->produits_transportes }}</span></h4>
                     </div>
+                    <br>
+
+                    <p>Opérateur : {{ Auth::user()->name }}</p>
+
                 </div>
             </div>
 
@@ -424,7 +428,10 @@
                             </tr>
                         </tbody>
                     </table>
-
+                    <br>
+                    <br>
+                    <br>
+                    <br>
                     <h3 style="margin-left: 50%; margin-top: 20px">Etabli a Ndjole, le
                         {{ \Carbon\Carbon::now()->format('d/m/Y') }}</h3>
                 </div>
