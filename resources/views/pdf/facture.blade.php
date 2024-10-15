@@ -185,6 +185,21 @@
     .first-line {
         border-top: 1px solid #000;
     }
+
+    .logo-for-the-moment {
+        --tw-text-opacity: 1;
+        color: rgb(220 38 38 / var(--tw-text-opacity))
+            /* #dc2626 */
+        ;
+        --tw-bg-opacity: 1;
+        background-color: rgb(251 146 60 / var(--tw-bg-opacity))
+            /* #fb923c */
+        ;
+        text-align: center;
+        border-radius: 9999px;
+        border-width: 1px;
+        padding: 12px;
+    }
 </style>
 
 <body>
@@ -192,7 +207,8 @@
         <div class="container">
             <div class="head" style="display: flex; justify-content: center; align-items: center">
                 <div style="display: inline-block">
-                    <img src=" " alt="logo" />
+                    <!-- <img src=" " alt="logo" /> -->
+                    <h1 class="logo-for-the-moment">TPL</h1>
                 </div>
                 <h1
                     style="
@@ -424,7 +440,8 @@
                                         ' ',
                                     ) }}
 
-                                    XAF TTC</td>
+                                    XAF TTC
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -433,7 +450,8 @@
                     <br>
                     <br>
                     <h3 style="margin-left: 50%; margin-top: 20px">Etabli a Ndjole, le
-                        {{ \Carbon\Carbon::now()->format('d/m/Y') }}</h3>
+                        {{ \Carbon\Carbon::now()->format('d/m/Y') }}
+                    </h3>
                 </div>
             </div>
         </div>
