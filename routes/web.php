@@ -30,4 +30,7 @@ Route::middleware([
     Route::get('/dashboard/caisse', function () {
         return view('dashboard.caisse');
     })->name('caisse');
+    Route::get('/dashboard/users', function () {
+        return view('dashboard.users');
+    })->name('users');
 });

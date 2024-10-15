@@ -2,7 +2,7 @@
 
     <div class="flex justify-between items-center w-full">
         <!-- compteur de pesage -->
-        <a href="{{ route('pesage') }}" class="flex flex-col bg-white rounded-lg shadow-xl w-[40%] hover:bg-slate-200 cursor-pointer">
+        <a href="#" class="flex flex-col bg-white rounded-lg shadow-xl w-[40%] hover:bg-slate-200 cursor-pointer">
             <div class="flex">
                 <div class="flex-col p-5 items-center w-1/2">
                     <div class="w-40 h-40 mb-10">
@@ -22,12 +22,14 @@
                 <div class="flex flex-col justify-center items-center space-y-5 w-1/2">
                     <div class="flex-col">
                         <x-label for="date_start" value="{{ __('Date de début') }}" class="mb-2" />
-                        <x-input type="date" id="date_start" name="date_start" :value="old('date_start')" required autofocus class="w-full" />
+                        <x-input type="date" id="date_start" name="date_start" :value="old('date_start')" required autofocus
+                            class="w-full" />
                     </div>
 
                     <div class="flex-col">
                         <x-label for="date_end" value="{{ __('Date de fin') }}" class="mb-2" />
-                        <x-input type="date" id="date_end" name="date_end" :value="old('date_end')" required class="w-full" />
+                        <x-input type="date" id="date_end" name="date_end" :value="old('date_end')" required
+                            class="w-full" />
                     </div>
                 </div>
             </div>
@@ -35,7 +37,7 @@
         </a>
 
         <!-- compteur de facture -->
-        <a href="{{ route('facturation') }}" class="flex flex-col bg-white rounded-lg shadow-xl w-[40%] hover:bg-slate-200 cursor-pointer">
+        <a href="#" class="flex flex-col bg-white rounded-lg shadow-xl w-[40%] hover:bg-slate-200 cursor-pointer">
             <div class="flex">
                 <div class="flex-col p-5 items-center w-1/2">
                     <div class="w-40 h-40 mb-10">
@@ -55,12 +57,14 @@
                 <div class="flex flex-col justify-center items-center space-y-5 w-1/2">
                     <div class="flex-col">
                         <x-label for="date_start" value="{{ __('Date de début') }}" class="mb-2" />
-                        <x-input type="date" id="date_start" name="date_start" :value="old('date_start')" required autofocus class="w-full" />
+                        <x-input type="date" id="date_start" name="date_start" :value="old('date_start')" required autofocus
+                            class="w-full" />
                     </div>
 
                     <div class="flex-col">
                         <x-label for="date_end" value="{{ __('Date de fin') }}" class="mb-2" />
-                        <x-input type="date" id="date_end" name="date_end" :value="old('date_end')" required class="w-full" />
+                        <x-input type="date" id="date_end" name="date_end" :value="old('date_end')" required
+                            class="w-full" />
                     </div>
                 </div>
             </div>
@@ -69,7 +73,8 @@
     </div>
 
     <!-- stats factures gateau -->
-    <a href="{{ route('rapport') }}" class="flex-col w-[60%] justify-center items-center text-center space-y-16 bg-white rounded-lg shadow-xl cursor-pointer hover:bg-slate-200">
+    <a href="#"
+        class="flex-col w-[60%] justify-center items-center text-center space-y-16 bg-white rounded-lg shadow-xl cursor-pointer hover:bg-slate-200">
         <span class="text-[#3d8cd6] text-2xl font-semibold">Recapitulatif global</span>
         <div class="">
             <canvas id="pieChart"></canvas>

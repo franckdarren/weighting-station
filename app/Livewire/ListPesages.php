@@ -28,11 +28,6 @@ class ListPesages extends Component implements HasForms, HasTable
     public function table(Table $table): Table
     {
         return $table
-            ->headerActions([
-                ImportAction::make()
-                    ->importer(BonPeseeImporter::class)
-                    ->label('Importer Fichier CSV')
-            ])
             ->query(BonPesee::query())
             ->columns([
                 TextColumn::make('numero')->searchable()->sortable(),

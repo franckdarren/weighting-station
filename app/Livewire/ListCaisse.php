@@ -118,18 +118,7 @@ class ListCaisse extends Component implements HasForms, HasTable
 
             ])
             ->actions([
-                // Export en PDF
-                Action::make('export_pdf')
-                    ->label('Exporter en PDF')
-                    ->action(function (FacturePesage $record) {
-                        return $this->exportFactureToPDF($record);
-                    })
-                    ->visible(fn() => auth()->user()->can('edit factures')) // Masquer pour les utilisateurs sans cette permission
-                    ->after(function () {
-                        activity()
-                            ->causedBy(auth()->user())
-                            ->log('Facture exportée au format PDF.'); // Correction du message
-                    }),
+                
 
 
                 // Changement de statut de la facture    
