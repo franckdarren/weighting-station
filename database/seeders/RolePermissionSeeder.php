@@ -53,6 +53,11 @@ class RolePermissionSeeder extends Seeder
             $deleteFactures,
             $viewFactures,
 
+            $createUsers,
+            $editUsers,
+            $deleteUsers,
+            $viewUsers,
+
             $createPesée,
             $editPesée,
             $deletePesée,
