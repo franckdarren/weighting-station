@@ -13,6 +13,6 @@ class BonPeseeSeeder extends Seeder
      */
     public function run(): void
     {
-        BonPesee::factory()->count(100)->create();
+        BonPesee::factory()->count(500)->create();
     }
 }
