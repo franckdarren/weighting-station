@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use Log;
 use App\Models\Pv;
 use App\Models\BonPesee;
 use App\Models\FacturePesage;

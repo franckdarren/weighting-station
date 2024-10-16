@@ -2,9 +2,10 @@
 
 namespace App\Console\Commands;
 
+use App\Models\BonPesee;
 use Illuminate\Console\Command;
 use PhpOffice\PhpSpreadsheet\IOFactory;
-use App\Models\weightingData;
+
 
 // Import the Data
 class SyncExcelData extends Command
@@ -25,15 +26,9 @@ class SyncExcelData extends Command
             array_shift($rows);
 
             foreach ($rows as $rowData) {
-                // $cellIterator = $row->getCellIterator();
-                // $cellIterator->setIterateOnlyExistingCells(false);
+                // Vérifie les données
 
-                // $rowData = [];
-                // foreach ($cellIterator as $cell) {
-                //     $rowData[] = $cell->getValue();
-                // }
-
-                weightingData::updateOrCreate(
+                BonPesee::updateOrCreate(
                     ['Numero' => $rowData[0]],
                     [
                         'Produits_transportes' => $rowData[1],
@@ -53,35 +48,6 @@ class SyncExcelData extends Command
                         'Vehicule_id' => $rowData[15],
                         'Conducteur_id' => $rowData[16],
                     ]
-                    // ['id' => $rowData[0]],
-                    // [
-                    //     'weighing1ID' => $rowData[1],
-                    //     'vehicleID' => $rowData[2],
-                    //     'plateFront' => $rowData[3],
-                    //     'plateBack' => $rowData[4],
-                    //     'vehicleType' => $rowData[5],
-                    //     'vehicleTypeOrdering' => $rowData[6],
-                    //     'date' => $this->parseCustomTime($rowData[7]),
-                    //     'totalWeight' => (float)$rowData[8],
-                    //     'overload' => (float)$rowData[9],
-                    //     'companyID' => $rowData[10],
-                    //     'companyName' => $rowData[11],
-                    //     'materialID' => $rowData[12],
-                    //     'materialName' => $rowData[13],
-                    //     'scaleID' => $rowData[14],
-                    //     'userID' => $rowData[15],
-                    //     'sync' => (bool)$rowData[16],
-                    //     'scaleType' => (int)$rowData[17],
-                    //     'isDeleted' => (bool)$rowData[18],
-                    //     'weighingDimensionId' => $rowData[19],
-                    //     'weighingNo' => (int)$rowData[20],
-                    //     'unetSent' => (bool)$rowData[21],
-                    //     'totalWeightLimit' => (float)$rowData[22],
-                    //     'totalWeightLimitTolerance' => (float)$rowData[23],
-                    //     'emptyWeight' => (float)$rowData[24],
-                    //     'speed' => (float)$rowData[25],
-                    //     'isUnetSent' => (bool)$rowData[26],
-                    // ]
                 );
             }
 
