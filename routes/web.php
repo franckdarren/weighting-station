@@ -33,4 +33,7 @@ Route::middleware([
     Route::get('/dashboard/users', function () {
         return view('dashboard.users');
     })->name('users');
+    Route::get('/dashboard/supports', function () {
+        return view('dashboard.supports');
+    })->name('supports');
 });

@@ -78,11 +78,15 @@ class RolePermissionSeeder extends Seeder
 
         $operateurFacture->givePermissionTo([
             $viewFactures,
+            $viewReglementations,
+
         ]);
 
         $operateurCaisse->givePermissionTo([
             $viewCaisses,
             $editCaisses,
+            $viewReglementations,
+
 
         ]);
 
