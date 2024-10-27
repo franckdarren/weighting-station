@@ -151,7 +151,22 @@ class ListFactures extends Component implements HasForms, HasTable
                 Action::make('edit')
                     ->label('Éditer')
                     ->action(function (FacturePesage $record, array $data) {
-                        $record->update($data);
+                        // Mise à jour de la table `FacturePesage`
+                        $record->update([
+                            'identite_conducteur' => $data['identite_conducteur'],
+                            'num_permis_conduire' => $data['num_permis_conduire'],
+                            'cte_grise_licence_autres' => $data['cte_grise_licence_autres'],
+                            'provenance' => $data['provenance'],
+                            'destination' => $data['destination'],
+                            'observations' => $data['observations'],
+                            'statut' => $data['statut'],
+                        ]);
+
+                        // Mise à jour de la table `BonPesee` à partir de la relation
+                        $record->bonPesee->update([
+                            'entreprise' => $data['entreprise'],
+                            'produits_transportes' => $data['produits_transportes'],
+                        ]);
                     })
                     ->form([
                         TextInput::make('entreprise')
@@ -205,12 +220,13 @@ class ListFactures extends Component implements HasForms, HasTable
                         'observations' => $record->observations,
                         'statut' => $record->statut,
                     ]))
-                    ->visible(fn() => auth()->user()->can('edit factures')) // Masquer pour les utilisateurs sans cette permission
+                    ->visible(fn() => auth()->user()->can('edit factures'))
                     ->after(function () {
                         activity()
                             ->causedBy(auth()->user())
-                            ->log('Facture modifiée.'); // Journalisation de l’action
+                            ->log('Facture modifiée.');
                     })
+
 
 
 
