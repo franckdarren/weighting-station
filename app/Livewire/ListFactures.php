@@ -27,6 +27,7 @@ use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
+use Filament\Tables\Actions\ActionGroup;
 
 class ListFactures extends Component implements HasForms, HasTable
 {
@@ -134,100 +135,103 @@ class ListFactures extends Component implements HasForms, HasTable
 
             ])
             ->actions([
-                // Export en PDF
-                Action::make('export_pdf')
-                    ->label('Exporter facture')
-                    ->action(function (FacturePesage $record) {
-                        return $this->exportFactureToPDF($record);
-                    })
-                    ->visible(fn(FacturePesage $record) => auth()->user()->can('view factures') && $record->statut === 'En attente de paiement') // Masquer pour les utilisateurs sans cette permission
-                    ->after(function () {
-                        activity()
-                            ->causedBy(auth()->user())
-                            ->log('Facture exportée au format PDF.'); // Correction du message
-                    }),
+                ActionGroup::make([
+                    // Export en PDF
+                    Action::make('export_pdf')
+                        ->label('Exporter facture')
+                        ->action(function (FacturePesage $record) {
+                            return $this->exportFactureToPDF($record);
+                        })
+                        ->visible(fn(FacturePesage $record) => auth()->user()->can('view factures') && $record->statut === 'En attente de paiement') // Masquer pour les utilisateurs sans cette permission
+                        ->after(function () {
+                            activity()
+                                ->causedBy(auth()->user())
+                                ->log('Facture exportée au format PDF.'); // Correction du message
+                        }),
 
-                // Action d'édition
-                Action::make('edit')
-                    ->label('Éditer')
-                    ->action(function (FacturePesage $record, array $data) {
-                        // Mise à jour de la table `FacturePesage`
-                        $record->update([
-                            'identite_conducteur' => $data['identite_conducteur'],
-                            'num_permis_conduire' => $data['num_permis_conduire'],
-                            'cte_grise_licence_autres' => $data['cte_grise_licence_autres'],
-                            'provenance' => $data['provenance'],
-                            'destination' => $data['destination'],
-                            'observations' => $data['observations'],
-                            'statut' => $data['statut'],
-                        ]);
+                    // Action d'édition
+                    Action::make('edit')
+                        ->label('Éditer')
+                        ->action(function (FacturePesage $record, array $data) {
+                            // Mise à jour de la table `FacturePesage`
+                            $record->update([
+                                'identite_conducteur' => $data['identite_conducteur'],
+                                'num_permis_conduire' => $data['num_permis_conduire'],
+                                'cte_grise_licence_autres' => $data['cte_grise_licence_autres'],
+                                'provenance' => $data['provenance'],
+                                'destination' => $data['destination'],
+                                'observations' => $data['observations'],
+                                'statut' => $data['statut'],
+                            ]);
 
-                        // Mise à jour de la table `BonPesee` à partir de la relation
-                        $record->bonPesee->update([
-                            'entreprise' => $data['entreprise'],
-                            'produits_transportes' => $data['produits_transportes'],
-                        ]);
-                    })
-                    ->form([
-                        TextInput::make('entreprise')
-                            ->label('Entreprise')
-                            ->required(),
+                            // Mise à jour de la table `BonPesee` à partir de la relation
+                            $record->bonPesee->update([
+                                'entreprise' => $data['entreprise'],
+                                'produits_transportes' => $data['produits_transportes'],
+                            ]);
+                        })
+                        ->form([
+                            TextInput::make('entreprise')
+                                ->label('Entreprise')
+                                ->required(),
 
-                        TextInput::make('produits_transportes')
-                            ->label('Produits transportés')
-                            ->required(),
+                            TextInput::make('produits_transportes')
+                                ->label('Produits transportés')
+                                ->required(),
 
-                        TextInput::make('identite_conducteur')
-                            ->label('Identité du conducteur')
-                            ->required(),
+                            TextInput::make('identite_conducteur')
+                                ->label('Identité du conducteur')
+                                ->required(),
 
-                        TextInput::make('num_permis_conduire')
-                            ->label('Permis de conduire')
-                            ->required(),
+                            TextInput::make('num_permis_conduire')
+                                ->label('Permis de conduire')
+                                ->required(),
 
-                        TextInput::make('cte_grise_licence_autres')
-                            ->label('Carte grise/Licence/Autres')
-                            ->required(),
+                            TextInput::make('cte_grise_licence_autres')
+                                ->label('Carte grise/Licence/Autres')
+                                ->required(),
 
-                        TextInput::make('provenance')
-                            ->label('Provenance')
-                            ->required(),
+                            TextInput::make('provenance')
+                                ->label('Provenance')
+                                ->required(),
 
-                        TextInput::make('destination')
-                            ->label('Destination')
-                            ->required(),
+                            TextInput::make('destination')
+                                ->label('Destination')
+                                ->required(),
 
-                        Textarea::make('observations')
-                            ->label('Observations'),
+                            Textarea::make('observations')
+                                ->label('Observations'),
 
-                        Select::make('statut')
-                            ->label('Statut')
-                            ->options([
-                                'En attente de paiement' => 'En attente de paiement',
-                            ])
-                            ->required(),
-                    ])
-                    ->modalHeading('Éditer la facture')
-                    ->modalWidth('lg')
-                    ->mountUsing(fn(Component $livewire, FacturePesage $record, $form) => $form->fill([
-                        'entreprise' => $record->bonPesee->entreprise,
-                        'produits_transportes' => $record->bonPesee->produits_transportes,
-                        'identite_conducteur' => $record->identite_conducteur,
-                        'num_permis_conduire' => $record->num_permis_conduire,
-                        'cte_grise_licence_autres' => $record->cte_grise_licence_autres,
-                        'provenance' => $record->provenance,
-                        'destination' => $record->destination,
-                        'observations' => $record->observations,
-                        'statut' => $record->statut,
-                    ]))
-                    ->visible(fn() => auth()->user()->can('edit factures'))
-                    ->after(function () {
-                        activity()
-                            ->causedBy(auth()->user())
-                            ->log('Facture modifiée.');
-                    })
-
-
+                            Select::make('statut')
+                                ->label('Statut')
+                                ->options([
+                                    'En attente de paiement' => 'En attente de paiement',
+                                ])
+                                ->required(),
+                        ])
+                        ->modalHeading('Éditer la facture')
+                        ->modalWidth('lg')
+                        ->mountUsing(fn(Component $livewire, FacturePesage $record, $form) => $form->fill([
+                            'entreprise' => $record->bonPesee->entreprise,
+                            'produits_transportes' => $record->bonPesee->produits_transportes,
+                            'identite_conducteur' => $record->identite_conducteur,
+                            'num_permis_conduire' => $record->num_permis_conduire,
+                            'cte_grise_licence_autres' => $record->cte_grise_licence_autres,
+                            'provenance' => $record->provenance,
+                            'destination' => $record->destination,
+                            'observations' => $record->observations,
+                            'statut' => $record->statut,
+                        ]))
+                        ->visible(fn() => auth()->user()->can('edit factures'))
+                        ->after(function () {
+                            activity()
+                                ->causedBy(auth()->user())
+                                ->log('Facture modifiée.');
+                        })
+                ])
+                    ->link()
+                    ->color('success')
+                    ->label('Actions')
 
 
             ])
