@@ -18,6 +18,7 @@
     <!-- Styles -->
     @livewireStyles
     @filamentStyles
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body class="font-sans antialiased flex flex-col min-h-screen" x-data="{ darkMode: false }"
