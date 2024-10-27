@@ -17,10 +17,21 @@ return new class extends Migration
             $table->string('type');
             $table->integer('forfait_usage');
             $table->integer('montant_total');
-            $table->string('statut')->default('En attente de paiement');
+            $table->string('statut')->default('En attente de traitement');
 
             $table->foreignId('bon_pesee_id')->constrained()->onDelete('cascade');
             $table->foreignId('pv_id')->nullable()->constrained()->onDelete('cascade');
+
+            $table->string('identite_conducteur')->nullable();
+            $table->string('num_permis_conduire')->nullable();
+            $table->string('cte_grise_licence_autres')->nullable();
+            $table->string('observations')->nullable();
+
+            $table->string('provenance')->nullable();
+            $table->string('destination')->nullable();
+
+
+
 
             $table->timestamps();
         });

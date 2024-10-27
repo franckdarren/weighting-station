@@ -22,11 +22,9 @@ class VehiculeFactory extends Factory
     public function definition(): array
     {
         return [
-            'plaque_immatriculation' => strtoupper($this->faker->bothify('??-###-??')),
             'carte_grise' => $this->faker->unique()->bothify('####-####-####'),
             'statut' => $this->faker->randomElement(['Particulier', 'Entreprise']),
             'nom_proprietaire' => $this->faker->name,
-            'entreprise' => $this->faker->company,
             'en_convoi' => false,
             'nb_vehicule' => 0,
             'ptac' => 50000,

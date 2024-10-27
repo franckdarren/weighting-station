@@ -14,14 +14,18 @@ return new class extends Migration
         Schema::create('bon_pesees', function (Blueprint $table) {
             $table->id();
             $table->string('numero')->unique();
-            $table->string('produits_transportes');
-            $table->string('provenance');
-            $table->string('destination');
-            $table->integer('lineaire_parcouru');
-            $table->integer('lineaire_restant');
-            $table->integer('poids');
-            $table->integer('surchage');
             $table->float('vitesse');
+            $table->string('plaque_immatriculation')->nullable();
+            $table->string('entreprise')->nullable();
+            $table->string('produits_transportes')->nullable();
+
+            $table->string('description')->nullable();
+
+            // $table->string('destination');
+            // $table->integer('lineaire_parcouru');
+            // $table->integer('lineaire_restant');
+            $table->integer('poids')->nullable();
+            $table->integer('surchage')->nullable();
 
             $table->integer('poids_E1')->nullable();
             $table->integer('poids_E2')->nullable();
@@ -32,8 +36,8 @@ return new class extends Migration
 
 
 
-            $table->foreignId('vehicule_id')->constrained()->onDelete('cascade');
-            $table->foreignId('conducteur_id')->constrained()->onDelete('cascade');
+            // $table->foreignId('vehicule_id')->constrained()->onDelete('cascade');
+            // $table->foreignId('conducteur_id')->constrained()->onDelete('cascade');
 
 
             $table->timestamps();

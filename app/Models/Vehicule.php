@@ -10,11 +10,9 @@ class Vehicule extends Model
     use HasFactory;
 
     protected $fillable = [
-        'plaque_immatriculation',
         'carte_grise',
         'statut',
         'nom_proprietaire',
-        'entreprise',
         'en_convoi',
         'nb_vehicule',
         'type_vehicule_id',

@@ -11,15 +11,12 @@ class BonPesee extends Model
 
     protected $fillable = [
         'numero',
-        'produits_transportes',
-        'provenance',
-        'destination',
-        'lineaire_parcouru',
-        'lineaire_restant',
-        'poids',
-        'surchage',
         'vitesse',
-
+        'plaque_immatriculation',
+        'entreprise',
+        'produits_transportes',
+        'description',
+        'poids',
         'poids_E1',
         'poids_E2',
         'poids_E3',
@@ -28,8 +25,6 @@ class BonPesee extends Model
         'poids_E6',
 
 
-        'vehicule_id',
-        'conducteur_id',
     ];
 
     protected static function boot()
@@ -54,15 +49,15 @@ class BonPesee extends Model
     }
 
 
-    public function vehicule()
-    {
-        return $this->belongsTo(Vehicule::class);
-    }
+    // public function vehicule()
+    // {
+    //     return $this->belongsTo(Vehicule::class);
+    // }
 
-    public function conducteur()
-    {
-        return $this->belongsTo(Conducteur::class);
-    }
+    // public function conducteur()
+    // {
+    //     return $this->belongsTo(Conducteur::class);
+    // }
 
     public function FacturePesage()
     {

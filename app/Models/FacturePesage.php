@@ -15,6 +15,16 @@ class FacturePesage extends Model
         'forfait_usage',
         'montant_total',
         'statut',
+        'identite_conducteur',
+        'num_permis_conduire',
+        'cte_grise_licence_autres',
+        'observations',
+
+        'provenance',
+        'destination',
+
+
+
 
         'bon_pesee_id',
         'pv_id',

@@ -24,7 +24,9 @@ use App\Filament\Exports\FacturePesageExporter;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Actions\Exports\Enums\ExportFormat;
 use Filament\Tables\Concerns\InteractsWithTable;
-
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
 
 class ListFactures extends Component implements HasForms, HasTable
 {
@@ -39,15 +41,29 @@ class ListFactures extends Component implements HasForms, HasTable
             ->columns([
                 TextColumn::make('numero')
                     ->searchable(),
-                TextColumn::make('bonPesee.vehicule.plaque_immatriculation')
-                    ->label("Matricule")
+                TextColumn::make('bonPesee.vitesse')
+                    ->label('Vitesse (km/h)')
+                    ->badge()
+                    ->color(fn($state) => $state > 8 ? 'danger' : 'success'),
+                TextColumn::make('bonPesee.plaque_immatriculation')
+                    ->label("Immatriculation")
                     ->badge()
                     ->color('gray')
                     ->searchable(),
-                TextColumn::make('bonPesee.conducteur')
-                    ->label("Chauffeur")
-                    ->formatStateUsing(fn($state) => $state->nom . ' ' . $state->prenoms),
-                TextColumn::make('bonPesee.vehicule.entreprise')
+                TextColumn::make('bonPesee.numero')
+                    ->label("Bon pesée")
+                    ->badge()
+                    ->color('gray')
+                    ->searchable(),
+                TextColumn::make('bonPesee.produits_transportes')
+                    ->label("Produits transporté"),
+                TextColumn::make('identite_conducteur')
+                    ->label("Chauffeur"),
+                TextColumn::make('num_permis_conduire')
+                    ->label("Permis de conduire"),
+                TextColumn::make('cte_grise_licence_autres')
+                    ->label("Carte grise/Licence/Autres"),
+                TextColumn::make('bonPesee.entreprise')
                     ->label("Société")
                     ->searchable(),
                 TextColumn::make('type')
@@ -56,11 +72,7 @@ class ListFactures extends Component implements HasForms, HasTable
                         'Surcharge' => 'warning',
                         'Normal' => 'success',
                     }),
-                TextColumn::make('bonPesee.numero')
-                    ->label("Bon pesée")
-                    ->badge()
-                    ->color('gray')
-                    ->searchable(),
+
                 TextColumn::make('pv.numero')
                     ->label("PV")
                     ->badge()
@@ -75,20 +87,23 @@ class ListFactures extends Component implements HasForms, HasTable
                     ->formatStateUsing(function ($state) {
                         return number_format($state, 0, '', ' ');
                     }),
+
+                TextColumn::make('provenance')
+                    ->label("Provenance")
+                    ->searchable(),
+                TextColumn::make('destination')
+                    ->label("Destination")
+                    ->searchable(),
+
+                TextColumn::make('observations')
+                    ->searchable(),
                 TextColumn::make('statut')
                     ->badge()
                     ->color(fn(?string $state): string => match ($state) {
-                        'En attente de paiement' => 'warning',
-                        'Payée' => 'success',
+                        'En attente de traitement' => 'warning',
+                        'En attente de paiement' => 'success',
                     }),
-                TextColumn::make('bonPesee.provenance')
-                    ->label("Provenance")
-                    ->searchable(),
-                TextColumn::make('bonPesee.destination')
-                    ->label("Destination")
-                    ->searchable(),
-                TextColumn::make('bonPesee.produits_transportes')
-                    ->label("Produits transporté"),
+
                 TextColumn::make('created_at')
                     ->searchable()
                     ->since()
@@ -121,16 +136,83 @@ class ListFactures extends Component implements HasForms, HasTable
             ->actions([
                 // Export en PDF
                 Action::make('export_pdf')
-                    ->label('Exporter en PDF')
+                    ->label('Exporter facture')
                     ->action(function (FacturePesage $record) {
                         return $this->exportFactureToPDF($record);
                     })
-                    ->visible(fn() => auth()->user()->can('view factures')) // Masquer pour les utilisateurs sans cette permission
+                    ->visible(fn(FacturePesage $record) => auth()->user()->can('view factures') && $record->statut === 'En attente de paiement') // Masquer pour les utilisateurs sans cette permission
                     ->after(function () {
                         activity()
                             ->causedBy(auth()->user())
                             ->log('Facture exportée au format PDF.'); // Correction du message
                     }),
+
+                // Action d'édition
+                Action::make('edit')
+                    ->label('Éditer')
+                    ->action(function (FacturePesage $record, array $data) {
+                        $record->update($data);
+                    })
+                    ->form([
+                        TextInput::make('entreprise')
+                            ->label('Entreprise')
+                            ->required(),
+
+                        TextInput::make('produits_transportes')
+                            ->label('Produits transportés')
+                            ->required(),
+
+                        TextInput::make('identite_conducteur')
+                            ->label('Identité du conducteur')
+                            ->required(),
+
+                        TextInput::make('num_permis_conduire')
+                            ->label('Permis de conduire')
+                            ->required(),
+
+                        TextInput::make('cte_grise_licence_autres')
+                            ->label('Carte grise/Licence/Autres')
+                            ->required(),
+
+                        TextInput::make('provenance')
+                            ->label('Provenance')
+                            ->required(),
+
+                        TextInput::make('destination')
+                            ->label('Destination')
+                            ->required(),
+
+                        Textarea::make('observations')
+                            ->label('Observations'),
+
+                        Select::make('statut')
+                            ->label('Statut')
+                            ->options([
+                                'En attente de paiement' => 'En attente de paiement',
+                            ])
+                            ->required(),
+                    ])
+                    ->modalHeading('Éditer la facture')
+                    ->modalWidth('lg')
+                    ->mountUsing(fn(Component $livewire, FacturePesage $record, $form) => $form->fill([
+                        'entreprise' => $record->bonPesee->entreprise,
+                        'produits_transportes' => $record->bonPesee->produits_transportes,
+                        'identite_conducteur' => $record->identite_conducteur,
+                        'num_permis_conduire' => $record->num_permis_conduire,
+                        'cte_grise_licence_autres' => $record->cte_grise_licence_autres,
+                        'provenance' => $record->provenance,
+                        'destination' => $record->destination,
+                        'observations' => $record->observations,
+                        'statut' => $record->statut,
+                    ]))
+                    ->visible(fn() => auth()->user()->can('edit factures')) // Masquer pour les utilisateurs sans cette permission
+                    ->after(function () {
+                        activity()
+                            ->causedBy(auth()->user())
+                            ->log('Facture modifiée.'); // Journalisation de l’action
+                    })
+
+
 
             ])
             ->bulkActions([

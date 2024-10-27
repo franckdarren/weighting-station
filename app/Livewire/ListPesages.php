@@ -30,27 +30,39 @@ class ListPesages extends Component implements HasForms, HasTable
         return $table
             ->query(BonPesee::query())
             ->columns([
-                TextColumn::make('numero')->searchable()->sortable(),
+                TextColumn::make('numero')
+                    ->searchable()
+                    ->sortable(),
+
                 TextColumn::make('vitesse')
                     ->label('Vitesse (km/h)')
                     ->badge()
                     ->color(fn($state) => $state > 8 ? 'danger' : 'success'),
+
                 TextColumn::make('status')
                     ->label('Status')
                     ->searchable()
                     ->color(fn($state) => $state == 'Valide' ? 'success' : 'danger'),
 
-
-                TextColumn::make('vehicule.plaque_immatriculation')
-                    ->label("Immatriculation")->searchable()
+                TextColumn::make('plaque_immatriculation')
+                    ->label("Immatriculation")
+                    ->searchable()
                     ->badge()
-                    ->color('gray'),
-                TextColumn::make('vehicule.entreprise')
-                    ->label("Entreprise")
-                    ->searchable(),
-                TextColumn::make('produits_transportes')->searchable(),
-                TextColumn::make('description')->searchable(),
+                    ->color('gray')
+                    ->getStateUsing(fn($record) => $record->vitesse >= 5 && $record->vitesse <= 8 ? $record->plaque_immatriculation : ''),
 
+                TextColumn::make('entreprise')
+                    ->label("Entreprise")
+                    ->searchable()
+                    ->getStateUsing(fn($record) => $record->vitesse >= 5 && $record->vitesse <= 8 ? $record->entreprise : ''),
+
+                TextColumn::make('produits_transportes')
+                    ->searchable()
+                    ->getStateUsing(fn($record) => $record->vitesse >= 5 && $record->vitesse <= 8 ? $record->produits_transportes : ''),
+
+                TextColumn::make('description')
+                    ->searchable()
+                    ->getStateUsing(fn($record) => $record->vitesse >= 5 && $record->vitesse <= 8 ? $record->description : ''),
             ])
             ->filters([
                 //Filtrer les pesées valides

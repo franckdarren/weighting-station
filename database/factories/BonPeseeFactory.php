@@ -37,15 +37,12 @@ class BonPeseeFactory extends Factory
 
         return [
             'produits_transportes' => $this->faker->randomElement(['DEBITE OKOUME', 'BANANE', 'METAL', 'GRAVIER', 'MANGANESE']),
-            'provenance' => $this->faker->city,
-            'destination' => $this->faker->city,
-            'lineaire_parcouru' => $this->faker->numberBetween(10, 200),
-            'lineaire_restant' => $this->faker->numberBetween(10, 200),
             'vitesse' => $this->faker->randomFloat(2, 5, 10),
+            'plaque_immatriculation'  => strtoupper($this->faker->bothify('??-###-??')),
+            'entreprise' => $this->faker->company,
+            'description' => 'Une description...',
             'poids' => $poids,
             'surchage' => $surcharge,
-            'vehicule_id' => $vehicule->id,
-            'conducteur_id' => Conducteur::inRandomOrder()->first()->id,
 
             'poids_E1' => $parts[0],
             'poids_E2' => $parts[1],

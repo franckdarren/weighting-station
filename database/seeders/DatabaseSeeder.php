@@ -27,8 +27,8 @@ class DatabaseSeeder extends Seeder
             RolePermissionSeeder::class,
             TypeVehiculeSeeder::class,
             VehiculeSeeder::class,
-            ConducteurSeeder::class,
-            // BonPeseeSeeder::class,
+            //ConducteurSeeder::class,
+            BonPeseeSeeder::class,
 
         ]);
     }

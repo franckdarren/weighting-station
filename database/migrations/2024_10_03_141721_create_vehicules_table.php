@@ -13,11 +13,9 @@ return new class extends Migration
     {
         Schema::create('vehicules', function (Blueprint $table) {
             $table->id();
-            $table->string('plaque_immatriculation');
             $table->string('carte_grise');
             $table->string('statut');
             $table->string('nom_proprietaire');
-            $table->string('entreprise')->nullable();
             $table->boolean('en_convoi');
             $table->integer('nb_vehicule')->nullable();
             $table->integer('ptac');
