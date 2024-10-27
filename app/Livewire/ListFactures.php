@@ -12,10 +12,15 @@ use App\Models\FacturePesage;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Filters\Filter;
 use Illuminate\Contracts\View\View;
+use Filament\Forms\Components\Select;
 use PDF; // Utilisation du facade PDF
 use Filament\Forms\Contracts\HasForms;
+use Filament\Forms\Components\Fieldset;
+use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Contracts\HasTable;
+use Filament\Forms\Components\TextInput;
+use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Actions\ExportAction;
 use Illuminate\Database\Eloquent\Builder;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -24,10 +29,6 @@ use App\Filament\Exports\FacturePesageExporter;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Actions\Exports\Enums\ExportFormat;
 use Filament\Tables\Concerns\InteractsWithTable;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Textarea;
-use Filament\Tables\Actions\ActionGroup;
 
 class ListFactures extends Component implements HasForms, HasTable
 {
@@ -171,33 +172,45 @@ class ListFactures extends Component implements HasForms, HasTable
                             ]);
                         })
                         ->form([
-                            TextInput::make('entreprise')
-                                ->label('Entreprise')
-                                ->required(),
+                            Fieldset::make('Infos bon de pesée')
+                                ->schema([
+                                    TextInput::make('entreprise')
+                                        ->label('Entreprise')
+                                        ->required(),
 
-                            TextInput::make('produits_transportes')
-                                ->label('Produits transportés')
-                                ->required(),
+                                    TextInput::make('produits_transportes')
+                                        ->label('Produits transportés')
+                                        ->required(),
 
-                            TextInput::make('identite_conducteur')
-                                ->label('Identité du conducteur')
-                                ->required(),
+                                ]),
 
-                            TextInput::make('num_permis_conduire')
-                                ->label('Permis de conduire')
-                                ->required(),
+                            Fieldset::make('Infos conducteur')
+                                ->schema([
+                                    TextInput::make('identite_conducteur')
+                                        ->label('Identité du conducteur')
+                                        ->required(),
 
-                            TextInput::make('cte_grise_licence_autres')
-                                ->label('Carte grise/Licence/Autres')
-                                ->required(),
+                                    TextInput::make('num_permis_conduire')
+                                        ->label('Permis de conduire')
+                                        ->required(),
 
-                            TextInput::make('provenance')
-                                ->label('Provenance')
-                                ->required(),
+                                    TextInput::make('cte_grise_licence_autres')
+                                        ->label('Carte grise/Licence/Autres')
+                                        ->required(),
 
-                            TextInput::make('destination')
-                                ->label('Destination')
-                                ->required(),
+                                ]),
+
+                            Fieldset::make('Infos parcours')
+                                ->schema([
+                                    TextInput::make('provenance')
+                                        ->label('Provenance')
+                                        ->required(),
+
+                                    TextInput::make('destination')
+                                        ->label('Destination')
+                                        ->required(),
+
+                                ]),
 
                             Textarea::make('observations')
                                 ->label('Observations'),
