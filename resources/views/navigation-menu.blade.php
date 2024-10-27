@@ -102,7 +102,7 @@
                         <x-nav-link href="{{ route('texteReglementation') }}" :active="request()->routeIs('texteReglementation')"
                             class="{{ request()->routeIs('texteReglementation') ? 'text-black' : 'text-white hover:text-gray-300' }}">
                             <i class="fa-solid fa-file me-1"></i>
-                            {{ __('Texte de reglementation') }}
+                            {{ __('Texte reglementaire') }}
                         </x-nav-link>
                     </div>
                 @endcan
@@ -112,7 +112,7 @@
                         <x-nav-link href="{{ route('users') }}" :active="request()->routeIs('users')"
                             class="{{ request()->routeIs('users') ? 'text-black' : 'text-white hover:text-gray-300' }}">
                             <i class="fa-solid fa-file me-1"></i>
-                            {{ __('Gestion des utilisateurs') }}
+                            {{ __('Gestion utilisateurs') }}
                         </x-nav-link>
                     </div>
                 @endcan

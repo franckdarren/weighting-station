@@ -48,7 +48,7 @@
                     }" x-init="init"></canvas>
                 </div>
                 <div class="text-center text-[#3d8cd6] mt-4">
-                    <i class="fa-solid fa-truck mb-4 text-5xl"></i>
+                <i class="fa-solid fa-truck mb-4 text-5xl"></i>
                     <div>Nombre de voiture pesé</div>
                 </div>
             </div>
