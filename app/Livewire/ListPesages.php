@@ -31,79 +31,25 @@ class ListPesages extends Component implements HasForms, HasTable
             ->query(BonPesee::query())
             ->columns([
                 TextColumn::make('numero')->searchable()->sortable(),
-                TextColumn::make('produits_transportes')->searchable(),
-                TextColumn::make('provenance')->searchable(),
-                TextColumn::make('destination')->searchable(),
-                TextColumn::make('poids')
-                    ->label('Poids (kg)'),
-                TextColumn::make('surchage')
-                    ->label('Surchage (kg)')
-                    ->badge(fn($state) => $state > 0)
-                    ->color(fn($state) => $state > 0 ? 'danger' : ''),
                 TextColumn::make('vitesse')
                     ->label('Vitesse (km/h)')
                     ->badge()
                     ->color(fn($state) => $state > 8 ? 'danger' : 'success'),
+                TextColumn::make('status')
+                    ->label('Status')
+                    ->searchable()
+                    ->color(fn($state) => $state == 'Valide' ? 'success' : 'danger'),
+
 
                 TextColumn::make('vehicule.plaque_immatriculation')
                     ->label("Immatriculation")->searchable()
                     ->badge()
                     ->color('gray'),
-                TextColumn::make('vehicule.carte_grise')
-                    ->label("Carte grise")->searchable()
-                    ->badge()
-                    ->color('gray'),
-                TextColumn::make('vehicule.statut')
-                    ->label("Statut")->searchable()
-                    ->badge()
-                    ->color(fn(?string $state): string => match ($state) {
-                        'Entreprise' => 'gray',
-                        'Particulier' => 'success',
-                        default => 'secondary',
-                    }),
-                TextColumn::make('vehicule.nom_proprietaire')
-                    ->label("Propriétaire")->searchable(),
-
-                TextColumn::make('conducteur_full_name')
-                    ->label("Conducteur")
-                    ->getStateUsing(fn($record) => optional($record->conducteur)->nom . ' ' . optional($record->conducteur)->prenoms),
-
-                TextColumn::make('conducteur.permis_conduire')
-                    ->label("Permis conduire")->searchable()
-                    ->badge()
-                    ->color('gray'),
-                TextColumn::make('conducteur.licence_transport')
-                    ->label("Licence")->searchable()
-                    ->badge()
-                    ->color('gray'),
-                TextColumn::make('conducteur.nature_piece_identite')
-                    ->label("Nature PI")->searchable()
-                    ->badge()
-                    ->color(fn(?string $state): string => match ($state) {
-                        'Passeport' => 'success',
-                        'Permis de conduire' => 'warning',
-                        'CNI' => 'gray',
-                    }),
-                TextColumn::make('conducteur.numero_piece_identite')
-                    ->label("Numéro PI")->searchable()
-                    ->badge()
-                    ->color('gray'),
-                TextColumn::make('poids_E1')
-                    ->label("Poids E1"),
-                TextColumn::make('poids_E2')
-                    ->label("Poids E2"),
-                TextColumn::make('poids_E3')
-                    ->label("Poids E3"),
-                TextColumn::make('poids_E4')
-                    ->label("Poids E4"),
-                TextColumn::make('poids_E5')
-                    ->label("Poids E5"),
-                TextColumn::make('poids_E6')
-                    ->label("Poids E6"),
-                TextColumn::make('created_at')
-                    ->since()
-                    ->dateTimeTooltip()
-                    ->label("Date création")
+                TextColumn::make('vehicule.entreprise')
+                    ->label("Entreprise")
+                    ->searchable(),
+                TextColumn::make('produits_transportes')->searchable(),
+                TextColumn::make('description')->searchable(),
 
             ])
             ->filters([

@@ -73,4 +73,9 @@ class BonPesee extends Model
     {
         return $this->hasOne(Pv::class);
     }
+
+    public function getStatusAttribute()
+    {
+        return $this->vitesse >= 5 && $this->vitesse <= 8 ? 'Valide' : 'A reprendre';
+    }
 }
