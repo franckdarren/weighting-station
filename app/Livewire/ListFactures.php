@@ -39,7 +39,9 @@ class ListFactures extends Component implements HasForms, HasTable
     public function table(Table $table): Table
     {
         return $table
-            ->query(FacturePesage::query())
+            ->query(
+                FacturePesage::query()->where('statut', 'En attente de paiement')->orWhere('statut', 'En attente de traitement') // Filtrer les factures en attente de paiement ou payée
+            )
             ->columns([
                 TextColumn::make('numero')
                     ->searchable(),
@@ -104,6 +106,8 @@ class ListFactures extends Component implements HasForms, HasTable
                     ->color(fn(?string $state): string => match ($state) {
                         'En attente de traitement' => 'warning',
                         'En attente de paiement' => 'success',
+                        'En attente' => 'warning',
+                        'Payée' => 'success',
                     }),
 
                 TextColumn::make('created_at')

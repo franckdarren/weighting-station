@@ -37,6 +37,8 @@ class ListCaisse extends Component implements HasForms, HasTable
     use InteractsWithTable;
     use InteractsWithForms;
 
+
+
     public function table(Table $table): Table
     {
         return $table
