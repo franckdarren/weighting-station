@@ -15,9 +15,9 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
-
-    Route::get('/pesage', [PesageController::class, 'index'])->name('pesage');
-
+    Route::get('/dashboard/pesage', function () {
+        return view('dashboard.pesage');
+    })->name('pesage');
     Route::get('/dashboard/facturation', function () {
         return view('dashboard.facturation');
     })->name('facturation');

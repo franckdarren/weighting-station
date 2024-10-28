@@ -15,7 +15,7 @@ class SyncExcelData extends Command
 
     public function handle()
     {
-        $excelFile = database_path('bon-pesees.xlsx');
+        $excelFile = database_path('../public/db_file/bon-pesees.xlsx');
         $lastModified = filemtime($excelFile);
 
         if ($lastModified > cache('last_excel_sync', 0)) {

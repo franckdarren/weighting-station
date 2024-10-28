@@ -9,6 +9,8 @@ make the needed changes regarding name, url, database connection
 
 `php artisan excel:sync`
 
+`php artisan shedule:work`
+
 `composer install`
 
 `php artisan db:seed`

@@ -1,6 +1,10 @@
 <!-- For synchronyse all the new change in Excel File -->
 
+<?php
+
 protected function schedule(Schedule $schedule)
 {
-$schedule->command('excel:sync')->everySecond(30);
+    $schedule->call(function () {
+        app(ExcelWatcherService::class)->watchExcelFile();
+    })->everySecond(5);
 }
