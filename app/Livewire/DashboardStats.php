@@ -40,14 +40,13 @@ class DashboardStats extends Component
             'datasets' => [[
                 'label' => 'Statistics',
                 'data' => [
-                    BonPesee::count(),
-                    FacturePesage::count(),
+                    // FacturePesage::count(),
                     FacturePesage::where('statut', 'Payée')->count(),
-                    FacturePesage::where('statut', 'Payée')->count() - FacturePesage::count(),
+                    FacturePesage::count() - FacturePesage::where('statut', 'Payée')->count(),
                 ],
-                'backgroundColor' => ['#3d8cd6', '#e15759', '#3ba94a', '#f28e2c'],
+                'backgroundColor' => ['#3ba94a', '#f28e2c'],
             ]],
-            'labels' => ['Total Pesages', 'Total Factures', 'Factures Payées', 'Factures Non-payées'],
+            'labels' => ['Factures Payées', 'Factures Non-payées'],
         ];
     }
 
