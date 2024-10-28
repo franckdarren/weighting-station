@@ -23,8 +23,15 @@ class FacturePesage extends Model
         'provenance',
         'destination',
 
-
-
+        'cash_montant',
+        'cash_num_transaction',
+        'airtelmoney_montant',
+        'airtelmoney_num_transaction',
+        'cheque_montant',
+        'cheque_num_transaction',
+        'total_paiement',
+        'reste_a_payer',
+        'trop_percu',
 
         'bon_pesee_id',
         'pv_id',

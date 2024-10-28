@@ -2,8 +2,10 @@
 
 namespace App\Livewire;
 
-use Livewire\Component;
 use App\Models\Pv;
+use Filament\Forms\Get;
+use Filament\Forms\Set;
+use Livewire\Component;
 use App\Models\BonPesee;
 use App\Models\Vehicule;
 use App\Models\Conducteur;
@@ -12,10 +14,15 @@ use App\Models\FacturePesage;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Filters\Filter;
 use Illuminate\Contracts\View\View;
+use Filament\Forms\Components\Select;
 use PDF; // Utilisation du facade PDF
 use Filament\Forms\Contracts\HasForms;
+use Filament\Forms\Components\Fieldset;
+use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Contracts\HasTable;
+use Filament\Forms\Components\TextInput;
+use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Actions\ExportAction;
 use Illuminate\Database\Eloquent\Builder;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -30,23 +37,38 @@ class ListCaisse extends Component implements HasForms, HasTable
     use InteractsWithTable;
     use InteractsWithForms;
 
-
     public function table(Table $table): Table
     {
         return $table
-            ->query(FacturePesage::query())
+            ->query(
+                FacturePesage::query()->where('statut', 'En attente de paiement')->orWhere('statut', 'Payée')->orWhere('statut', 'En attente') // Filtrer les factures en attente de paiement ou payée
+            )
             ->columns([
                 TextColumn::make('numero')
                     ->searchable(),
-                TextColumn::make('bonPesee.vehicule.plaque_immatriculation')
-                    ->label("Matricule")
+                TextColumn::make('bonPesee.vitesse')
+                    ->label('Vitesse (km/h)')
+                    ->badge()
+                    ->color(fn($state) => $state > 8 ? 'danger' : 'success'),
+                TextColumn::make('bonPesee.plaque_immatriculation')
+                    ->label("Immatriculation")
                     ->badge()
                     ->color('gray')
                     ->searchable(),
-                TextColumn::make('bonPesee.conducteur')
-                    ->label("Chauffeur")
-                    ->formatStateUsing(fn($state) => $state->nom . ' ' . $state->prenoms),
-                TextColumn::make('bonPesee.vehicule.entreprise')
+                TextColumn::make('bonPesee.numero')
+                    ->label("Bon pesée")
+                    ->badge()
+                    ->color('gray')
+                    ->searchable(),
+                TextColumn::make('bonPesee.produits_transportes')
+                    ->label("Produits transporté"),
+                TextColumn::make('identite_conducteur')
+                    ->label("Chauffeur"),
+                TextColumn::make('num_permis_conduire')
+                    ->label("Permis de conduire"),
+                TextColumn::make('cte_grise_licence_autres')
+                    ->label("Carte grise/Licence/Autres"),
+                TextColumn::make('bonPesee.entreprise')
                     ->label("Société")
                     ->searchable(),
                 TextColumn::make('type')
@@ -55,11 +77,7 @@ class ListCaisse extends Component implements HasForms, HasTable
                         'Surcharge' => 'warning',
                         'Normal' => 'success',
                     }),
-                TextColumn::make('bonPesee.numero')
-                    ->label("Bon pesée")
-                    ->badge()
-                    ->color('gray')
-                    ->searchable(),
+
                 TextColumn::make('pv.numero')
                     ->label("PV")
                     ->badge()
@@ -74,20 +92,24 @@ class ListCaisse extends Component implements HasForms, HasTable
                     ->formatStateUsing(function ($state) {
                         return number_format($state, 0, '', ' ');
                     }),
+
+                TextColumn::make('provenance')
+                    ->label("Provenance")
+                    ->searchable(),
+                TextColumn::make('destination')
+                    ->label("Destination")
+                    ->searchable(),
+
+                TextColumn::make('observations')
+                    ->searchable(),
                 TextColumn::make('statut')
                     ->badge()
                     ->color(fn(?string $state): string => match ($state) {
                         'En attente de paiement' => 'warning',
+                        'En attente' => 'warning',
                         'Payée' => 'success',
                     }),
-                TextColumn::make('bonPesee.provenance')
-                    ->label("Provenance")
-                    ->searchable(),
-                TextColumn::make('bonPesee.destination')
-                    ->label("Destination")
-                    ->searchable(),
-                TextColumn::make('bonPesee.produits_transportes')
-                    ->label("Produits transporté"),
+
                 TextColumn::make('created_at')
                     ->searchable()
                     ->since()
@@ -118,43 +140,132 @@ class ListCaisse extends Component implements HasForms, HasTable
 
             ])
             ->actions([
-                
+                ActionGroup::make([
+                    // Export en PDF
+                    Action::make('export_pdf')
+                        ->label('Exporter facture')
+                        ->action(function (FacturePesage $record) {
+                            return $this->exportFactureToPDF($record);
+                        })
+                        ->visible(fn(FacturePesage $record) => auth()->user()->can('view factures') && $record->statut === 'Payée') // Masquer pour les utilisateurs sans cette permission
+                        ->after(function () {
+                            activity()
+                                ->causedBy(auth()->user())
+                                ->log('Facture exportée au format PDF.'); // Correction du message
+                        }),
 
+                    // Action de paiement
+                    Action::make('edit')
+                        ->label('Mode de paiement')
+                        ->action(function (FacturePesage $record, array $data) {
+                            // Mise à jour de la table `FacturePesage`
+                            $record->update([
+                                'montant_total' => $data['montant_total'],
+                                'cash_montant' => $data['cash_montant'],
+                                'airtelmoney_montant' => $data['airtelmoney_montant'],
+                                'cheque_montant' => $data['cheque_montant'],
+                                'total_paiement' => $data['total_paiement'],
+                                'reste_a_payer' => $data['reste_a_payer'],
+                                'trop_percu' => $data['trop_percu'],
+                                'statut' => $data['statut'],
+                            ]);
+                        })
+                        ->form([
+                            TextInput::make('montant_total')
+                                ->label('Montant total')
+                                ->numeric()
+                                ->required()
+                                ->live(true)
+                                ->afterStateUpdated(function (Get $get, Set $set) {
+                                    Self::calculateTotalPaiement($get, $set);
+                                }),
 
-                // Changement de statut de la facture    
-                Action::make('changer_statut')
-                    ->label('Changer statut')
-                    ->action(function (FacturePesage $record) {
-                        $ancienStatut = $record->statut;  // Enregistrer l'ancien statut
+                            Fieldset::make('Cash')
+                                ->schema([
+                                    TextInput::make('cash_montant')
+                                        ->label('Montant')
+                                        ->live(true)
+                                        ->numeric()
+                                        ->afterStateUpdated(function (Get $get, Set $set) {
+                                            Self::calculateTotalPaiement($get, $set);
+                                        }),
+                                    TextInput::make('cash_num_transaction')
+                                        ->label('Numéro de transaction'),
+                                ]),
 
-                        // Changer le statut de la facture
-                        if ($record->statut === 'En attente de paiement') {
-                            $record->statut = 'Payée';
-                        } else {
-                            $record->statut = 'En attente de paiement';
-                        }
+                            Fieldset::make('Airtel Money')
+                                ->schema([
+                                    TextInput::make('airtelmoney_montant')
+                                        ->label('Montant')
+                                        ->live(true)
+                                        ->afterStateUpdated(function (Get $get, Set $set) {
+                                            Self::calculateTotalPaiement($get, $set);
+                                        })
+                                        ->numeric(),
+                                    TextInput::make('airtelmoney_num_transaction')
+                                        ->label('Numéro de transaction'),
+                                ]),
 
-                        $record->save();
+                            Fieldset::make('Chèque')
+                                ->schema([
+                                    TextInput::make('cheque_montant')
+                                        ->label('Montant')
+                                        ->live(true)
+                                        ->afterStateUpdated(function (Get $get, Set $set) {
+                                            Self::calculateTotalPaiement($get, $set);
+                                        })
+                                        ->numeric(),
+                                    TextInput::make('cheque_num_transaction')
+                                        ->label('Numéro de transaction'),
+                                ]),
 
-                        // Enregistrer l'action dans le journal avec Spatie Activitylog
-                        activity()
-                            ->causedBy(auth()->user())
-                            ->performedOn($record)
-                            ->withProperties([
-                                'ancien_statut' => $ancienStatut,
-                                'nouveau_statut' => $record->statut,
-                                'facture_code' => $record->numero,
-                            ])
-                            ->log("Le statut de la facture $record->numero a été changé de $ancienStatut à $record->statut"); // Description de l'action
+                            TextInput::make('total_paiement')
+                                ->label('Total paiement')
+                                ->required()
+                                ->live(true)
+                                ->afterStateUpdated(function (Get $get, Set $set) {
+                                    Self::calculateTotalPaiement($get, $set);
+                                }),
 
-                        // Rafraîchir la table après mise à jour
-                        $this->dispatch('refreshTable');
+                            TextInput::make('reste_a_payer')
+                                ->label('Reste à payer')
+                                ->required(),
 
-                        // Utiliser un message flash
-                        session()->flash('message', 'Le statut a été mis à jour avec succès !');
-                    })
-                    ->requiresConfirmation()
+                            TextInput::make('trop_percu')
+                                ->label('Trop perçu')
+                                ->required(),
+
+                            Select::make('statut')
+                                ->label('Statut')
+                                ->options([
+                                    'En attente' => 'En attente',
+                                    'Payée' => 'Payée',
+                                ])
+                                ->required(),
+                        ])
+                        ->modalHeading('Éditer la facture')
+                        ->modalWidth('lg')
+                        ->mountUsing(fn(Component $livewire, FacturePesage $record, $form) => $form->fill([
+                            'montant_total' => $record->montant_total,
+                            'cash_montant' => $record->cash_montant,
+                            'airtelmoney_montant' => $record->airtelmoney_montant,
+                            'cheque_montant' => $record->cheque_montant,
+                            'total_paiement' => $record->total_paiement,
+                            'reste_a_payer' => $record->reste_a_payer,
+                            'trop_percu' => $record->trop_percu,
+                            'statut' => $record->statut,
+                        ]))
+                        ->visible(fn() => auth()->user()->can('edit factures'))
+                        ->after(function () {
+                            activity()
+                                ->causedBy(auth()->user())
+                                ->log('Facture modifiée.');
+                        })
+
+                ])
+                    ->link()
                     ->color('success')
+                    ->label('Actions')
 
             ])
             ->bulkActions([
@@ -175,12 +286,12 @@ class ListCaisse extends Component implements HasForms, HasTable
 
     protected function getSurchargeWeightsCount(): int
     {
-        return FacturePesage::where('type', 'Surcharge')->count();
+        return FacturePesage::where('type', 'Surcharge')->where('statut', 'En attente de paiement')->orWhere('statut', 'Payée')->count();
     }
 
     protected function getNoSurchargeWeightsCount(): int
     {
-        return FacturePesage::where('type', 'Normal')->count();
+        return FacturePesage::where('type', 'Normal')->where('statut', 'En attente de paiement')->orWhere('statut', 'Payée')->count();
     }
 
     protected function getPaidFactureCount(): int
@@ -248,6 +359,19 @@ class ListCaisse extends Component implements HasForms, HasTable
         return response()->streamDownload(function () use ($pdf) {
             echo $pdf->stream();
         }, 'facture_' . $facture->numero . '.pdf');
+    }
+
+    public static function calculateTotalPaiement(Get $get, Set $set): void
+    {
+        $set('total_paiement', $get('cash_montant') + $get('airtelmoney_montant') + $get('cheque_montant'));
+
+        // Calculer reste_a_payer avec une condition pour ne pas être négatif
+        $resteAPayer = $get('montant_total') - $get('total_paiement');
+        $set('reste_a_payer', max(0, $resteAPayer));
+
+        // Calculer trop_percu avec une condition pour ne pas être négatif
+        $tropPerçu = $get('total_paiement') - $get('montant_total');
+        $set('trop_percu', max(0, $tropPerçu));
     }
 
 

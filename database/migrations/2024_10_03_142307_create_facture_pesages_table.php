@@ -30,6 +30,19 @@ return new class extends Migration
             $table->string('provenance')->nullable();
             $table->string('destination')->nullable();
 
+            $table->integer('cash_montant')->nullable();
+            $table->string('cash_num_transaction')->nullable();
+            $table->integer('airtelmoney_montant')->nullable();
+            $table->string('airtelmoney_num_transaction')->nullable();
+            $table->integer('cheque_montant')->nullable();
+            $table->string('cheque_num_transaction')->nullable();
+            $table->integer('total_paiement')->nullable();
+            $table->integer('reste_a_payer')->nullable();
+            $table->integer('trop_percu')->nullable();
+
+
+
+
 
 
 
