@@ -103,12 +103,11 @@ class UserManagement extends Component
     public function deleteUser($userId)
     {
         $user = User::find($userId);
-        if ($user) {
-            $user->delete(); // Suppression avec soft delete
-            $this->users = User::with('roles')->get(); // Rafraîchit la liste des utilisateurs
-            session()->flash('message', 'Utilisateur supprimé avec succès.');
-        }
+        $user->delete(); // Cela effectuera une suppression douce
+        $this->users = User::with('roles')->get(); // Rafraîchit la liste des utilisateurs
+        session()->flash('message', 'Utilisateur supprimé avec succès.');
     }
+
 
 
     public function render()
