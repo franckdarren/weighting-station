@@ -27,6 +27,12 @@ Route::middleware([
     Route::get('/dashboard/rapport', function () {
         return view('dashboard.rapport');
     })->name('rapport');
+    Route::get('dashboard/rapport/pesee', function () {
+        return view('dashboard.rapport.pesee');
+    })->name('rapport-pesee');
+    Route::get('dashboard/rapport/facture', function () {
+        return view('dashboard.rapport.facture');
+    })->name('rapport-facture');
     Route::get('/dashboard/caisse', function () {
         return view('dashboard.caisse');
     })->name('caisse');
