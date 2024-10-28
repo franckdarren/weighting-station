@@ -13,8 +13,8 @@ class DashboardStats extends Component
         $totalWeighings = BonPesee::count();
         return [
             'datasets' => [[
-                'data' => [$totalWeighings, 100 - $totalWeighings],
-                'backgroundColor' => ['#3d8cd6', 'transparent'],
+                'data' => [$totalWeighings],
+                'backgroundColor' => ['#3d8cd6'],
                 'borderWidth' => 2,
                 'borderColor' => '#00000019',
             ]]
@@ -26,8 +26,8 @@ class DashboardStats extends Component
         $totalInvoices = FacturePesage::count();
         return [
             'datasets' => [[
-                'data' => [$totalInvoices, 100 - $totalInvoices],
-                'backgroundColor' => ['#3d8cd6', 'transparent'],
+                'data' => [$totalInvoices],
+                'backgroundColor' => ['#3d8cd6'],
                 'borderWidth' => 2,
                 'borderColor' => '#00000019',
             ]]
@@ -42,8 +42,8 @@ class DashboardStats extends Component
                 'data' => [
                     BonPesee::count(),
                     FacturePesage::count(),
-                    FacturePesage::where('statut', 'payé')->count(),
-                    FacturePesage::where('statut', 'non payé')->count(),
+                    FacturePesage::where('statut', 'Payée')->count(),
+                    FacturePesage::where('statut', 'Payée')->count() - FacturePesage::count(),
                 ],
                 'backgroundColor' => ['#3d8cd6', '#e15759', '#3ba94a', '#f28e2c'],
             ]],
