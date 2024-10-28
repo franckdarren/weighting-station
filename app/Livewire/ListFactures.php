@@ -40,8 +40,9 @@ class ListFactures extends Component implements HasForms, HasTable
     {
         return $table
             ->query(
-                FacturePesage::query()->where('statut', 'En attente de paiement')->orWhere('statut', 'En attente de traitement') // Filtrer les factures en attente de paiement ou payée
+                FacturePesage::query()->whereIn('statut', ['En attente de paiement', 'En attente de traitement']) // Filtrer les factures en attente de paiement ou en attente de traitement
             )
+
             ->columns([
                 TextColumn::make('numero')
                     ->searchable(),
@@ -103,6 +104,7 @@ class ListFactures extends Component implements HasForms, HasTable
                     ->searchable(),
                 TextColumn::make('statut')
                     ->badge()
+                    ->sortable()
                     ->color(fn(?string $state): string => match ($state) {
                         'En attente de traitement' => 'warning',
                         'En attente de paiement' => 'success',
@@ -112,33 +114,13 @@ class ListFactures extends Component implements HasForms, HasTable
 
                 TextColumn::make('created_at')
                     ->searchable()
-                    ->since()
+                    ->sortable()
+                    ->dateTime('d-m-Y à H\hi')
                     ->dateTimeTooltip()
                     ->label("Date création")
 
             ])
-            ->filters([
-                Filter::make('Avec surchage')
-                    ->query(fn(Builder $query): Builder => $query->where('type', 'Surcharge'))
-                    ->toggle()
-                    ->label('Avec surcharge (' . $this->getSurchargeWeightsCount() . ')'),
-
-                Filter::make('Sans surchage')
-                    ->query(fn(Builder $query): Builder => $query->where('type', 'Normal'))
-                    ->toggle()
-                    ->label('Sans surcharge (' . $this->getNoSurchargeWeightsCount() . ')'),
-
-                Filter::make('Payées')
-                    ->query(fn(Builder $query): Builder => $query->where('statut', 'Payée'))
-                    ->toggle()
-                    ->label('Payées (' . $this->getPaidFactureCount() . ')'),
-
-                Filter::make('Non payées')
-                    ->query(fn(Builder $query): Builder => $query->where('statut', 'En attente de paiement'))
-                    ->toggle()
-                    ->label('Non payées (' . $this->getNoPaidFactureCount() . ')'),
-
-            ])
+            ->filters([])
             ->actions([
                 ActionGroup::make([
                     // Export en PDF
@@ -266,26 +248,6 @@ class ListFactures extends Component implements HasForms, HasTable
                             ->log('Export de factures effectuées au format Excel.');
                     })
             ]);
-    }
-
-    protected function getSurchargeWeightsCount(): int
-    {
-        return FacturePesage::where('type', 'Surcharge')->count();
-    }
-
-    protected function getNoSurchargeWeightsCount(): int
-    {
-        return FacturePesage::where('type', 'Normal')->count();
-    }
-
-    protected function getPaidFactureCount(): int
-    {
-        return FacturePesage::where('statut', 'Payée')->count();
-    }
-
-    protected function getNoPaidFactureCount(): int
-    {
-        return FacturePesage::where('statut', 'En attente de paiement')->count();
     }
 
     // Méthode pour exporter une facture en PDF
