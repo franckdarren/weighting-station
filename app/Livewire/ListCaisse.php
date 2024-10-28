@@ -146,10 +146,10 @@ class ListCaisse extends Component implements HasForms, HasTable
                             return $this->exportFactureToPDF($record);
                         })
                         ->visible(fn(FacturePesage $record) => auth()->user()->can('view factures') && $record->statut === 'Payée') // Masquer pour les utilisateurs sans cette permission
-                        ->after(function () {
+                        ->after(function (FacturePesage $record) {
                             activity()
                                 ->causedBy(auth()->user())
-                                ->log('Facture exportée au format PDF.'); // Correction du message
+                                ->log(`Facture $record->numero exportée au format PDF.`); // Correction du message
                         }),
 
                     // Action de paiement

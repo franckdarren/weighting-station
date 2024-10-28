@@ -222,10 +222,10 @@ class ListFactures extends Component implements HasForms, HasTable
                             'statut' => $record->statut,
                         ]))
                         ->visible(fn() => auth()->user()->can('edit factures'))
-                        ->after(function () {
+                        ->after(function (FacturePesage $record) {  // Passer $record ici
                             activity()
                                 ->causedBy(auth()->user())
-                                ->log('Facture modifiée.');
+                                ->log('Facture traitée: ' . $record->numero);
                         })
                 ])
                     ->link()
