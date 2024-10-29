@@ -63,6 +63,7 @@
                 <label for="status" class="block text-sm font-medium text-gray-700">Statut</label>
                 <select wire:model="status" id="status"
                     class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+                    <option>Choisir un statut</option>
                     <option value="Actif">Actif</option>
                     <option value="Désactivé">Désactivé</option>
                     <option value="Suspendu">Suspendu</option>
