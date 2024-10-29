@@ -35,12 +35,24 @@ class BonPeseeFactory extends Factory
         // Génération des poids aléatoires pour poids_E1 à poids_E6 avec les nouvelles contraintes
         $parts = $this->randomWeightDistribution($poids, $surcharge);
 
+        // Génération de la vitesse
+        $vitesse = $this->faker->randomFloat(2, 3, 10);
+
+        // Déterminer la description en fonction de la vitesse
+        if ($vitesse > 8) {
+            $description = 'Excès de vitesse';
+        } elseif ($vitesse < 5) {
+            $description = 'Vitesse trop basse';
+        } else {
+            $description = 'Vitesse normale';
+        }
+
         return [
             'produits_transportes' => $this->faker->randomElement(['DEBITE OKOUME', 'BANANE', 'METAL', 'GRAVIER', 'MANGANESE']),
-            'vitesse' => $this->faker->randomFloat(2, 5, 10),
+            'vitesse' => $vitesse,
             'plaque_immatriculation'  => strtoupper($this->faker->bothify('??-###-??')),
             'entreprise' => $this->faker->company,
-            'description' => 'Une description...',
+            'description' => $description,
             'poids' => $poids,
             'surchage' => $surcharge,
 

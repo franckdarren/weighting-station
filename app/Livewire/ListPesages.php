@@ -62,7 +62,8 @@ class ListPesages extends Component implements HasForms, HasTable
 
                 TextColumn::make('description')
                     ->searchable()
-                    ->getStateUsing(fn($record) => $record->vitesse >= 5 && $record->vitesse <= 8 ? $record->description : ''),
+                    ->color(fn($state) => $state == 'Vitesse normale' ? 'success' : 'danger'),
+
             ])
             ->filters([
                 //Filtrer les pesées valides
