@@ -5,10 +5,14 @@ namespace App\Livewire;
 use App\Models\Ticket;
 use Livewire\Component;
 use Filament\Tables\Table;
+use Filament\Tables\Actions\Action;
 use Illuminate\Contracts\View\View;
 use Filament\Forms\Contracts\HasForms;
+use Filament\Pages\Actions\ViewAction;
+use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Contracts\HasTable;
+use Filament\Notifications\Notification;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Tables\Concerns\InteractsWithTable;
 
@@ -40,8 +44,23 @@ class TicketList extends Component implements HasForms, HasTable
             ])
             ->filters([]) // Ajoute des filtres ici si nécessaire
             ->actions([
-                // Définis les actions ici, par exemple un bouton pour voir les détails du ticket
+                Action::make('voir')
+                    ->label('Voir les détails')
+                    ->url(fn(Ticket $record) => route('ticket-details', $record->id)), // Redirige vers la vue des détails
+                Action::make('Répondre')
+                    ->label('Répondre')
+                    ->form([
+                        Textarea::make('message')->required()->label('Votre réponse') // Modifier le champ en "message"
+                    ])
+                    ->action(function (Ticket $record, array $data) {
+                        $record->messages()->create([ // Utiliser "messages" au lieu de "responses"
+                            'user_id' => auth()->id(),
+                            'content' => $data['message'], // Utiliser le nom du champ "message"
+                        ]);
+                        // Ajouter une notification ici, si nécessaire
+                    }),
             ])
+
             ->bulkActions([]); // Ajoute des actions de masse si nécessaire
     }
 
