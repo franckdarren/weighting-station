@@ -34,7 +34,14 @@ class TicketList extends Component implements HasForms, HasTable
                     ->searchable(),
                 TextColumn::make('status')
                     ->label('Status')
-                    ->sortable(),
+                    ->sortable()
+                    ->badge()
+                    ->color(fn(?string $state): string => match ($state) {
+                        'open' => 'danger',
+                        'in_progress' => 'warning',
+                        'resolved' => 'success',
+                        'closed' => 'success',
+                    }),
                 TextColumn::make('user.name')
                     ->label('User')
                     ->sortable(),
