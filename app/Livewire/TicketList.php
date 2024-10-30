@@ -36,10 +36,10 @@ class TicketList extends Component implements HasForms, HasTable
                     ->label('ID')
                     ->sortable(),
                 TextColumn::make('title')
-                    ->label('Title')
+                    ->label('Titre')
                     ->searchable(),
                 TextColumn::make('status')
-                    ->label('Status')
+                    ->label('Statut')
                     ->sortable()
                     ->badge()
                     ->color(fn(?string $state): string => match ($state) {
@@ -49,12 +49,12 @@ class TicketList extends Component implements HasForms, HasTable
                         'closed' => 'success',
                     }),
                 TextColumn::make('user.name')
-                    ->label('User')
+                    ->label('Utilisateur')
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('created_at')
-                    ->label('Created At')
-                    ->dateTime(),
+                    ->label('Date création')
+                    ->dateTime('d-m-Y à H\hi'),
             ])
             ->filters([]) // Ajoute des filtres ici si nécessaire
             ->actions([
