@@ -21,10 +21,16 @@ class TicketList extends Component implements HasForms, HasTable
     use InteractsWithTable;
     use InteractsWithForms;
 
+    public $isModalOpen = false; // État de la modale
+    public $title = '';
+    public $description = '';
+
     public function table(Table $table): Table
     {
         return $table
-            ->query(Ticket::query()->with('user')) // Charger l'utilisateur associé
+            ->query(Ticket::query()
+                ->with('user')) // Charger l'utilisateur associé
+            ->defaultSort('created_at', 'desc')
             ->columns([
                 TextColumn::make('id')
                     ->label('ID')
@@ -44,7 +50,8 @@ class TicketList extends Component implements HasForms, HasTable
                     }),
                 TextColumn::make('user.name')
                     ->label('User')
-                    ->sortable(),
+                    ->sortable()
+                    ->searchable(),
                 TextColumn::make('created_at')
                     ->label('Created At')
                     ->dateTime(),
@@ -69,6 +76,29 @@ class TicketList extends Component implements HasForms, HasTable
             ])
 
             ->bulkActions([]); // Ajoute des actions de masse si nécessaire
+    }
+
+    public function openModal()
+    {
+        $this->reset('title', 'description'); // Réinitialisez les champs du formulaire
+        $this->isModalOpen = true;
+    }
+
+    public function createTicket()
+    {
+        Ticket::create([
+            'user_id' => auth()->id(),
+            'title' => $this->title,
+            'description' => $this->description,
+            'status' => 'open', // Statut par défaut
+        ]);
+
+        Notification::make()
+            ->title('Ticket créé avec succès!')
+            ->success()
+            ->send();
+
+        $this->isModalOpen = false; // Ferme la modale après la création
     }
 
     public function render(): View
