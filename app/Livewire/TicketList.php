@@ -46,7 +46,13 @@ class TicketList extends Component implements HasForms, HasTable
                         'open' => 'danger',
                         'in_progress' => 'warning',
                         'resolved' => 'success',
-                        'closed' => 'success',
+                        'closed' => 'gray',
+                    })
+                    ->formatStateUsing(fn(?string $state): string => match ($state) {
+                        'open' => 'Ouvert',
+                        'in_progress' => 'En cours',
+                        'resolved' => 'Résolu',
+                        'closed' => 'Fermé',
                     }),
                 TextColumn::make('user.name')
                     ->label('Utilisateur')

@@ -26,5 +26,15 @@ class Ticket extends Model
     {
         return $this->hasMany(Message::class);
     }
-    
+
+    public function getStatusInFrench(): string
+    {
+        return match ($this->status) {
+            'open' => 'Ouvert',
+            'in_progress' => 'En cours',
+            'resolved' => 'Résolu',
+            'closed' => 'Fermé',
+            default => ucfirst($this->status),
+        };
+    }
 }

@@ -2,6 +2,10 @@
     <div class="max-w-4xl mx-auto my-8 p-6 bg-white shadow-lg rounded-lg">
         <div class="border-b pb-4 mb-6">
             <h1 class="text-2xl font-bold text-gray-800">Ticket #{{ $ticket->id }} - {{ $ticket->title }}</h1>
+            <p class="text-sm text-gray-500 mt-1">
+                Par <span class="font-semibold">{{ $ticket->user->name }}</span>
+                le {{ $ticket->created_at->format('d/m/Y à H:i') }}
+            </p>
             <p class="text-gray-600 mt-2">{{ $ticket->description }}</p>
             <span
                 class="inline-block px-3 py-1 mt-4 text-sm font-semibold 
@@ -12,7 +16,7 @@
                                 : ($ticket->status === 'resolved'
                                     ? 'bg-green-100 text-green-600'
                                     : 'bg-gray-100 text-gray-600')) }}">
-                Status: {{ ucfirst($ticket->status) }}
+                Status: {{ $ticket->getStatusInFrench() }}
             </span>
         </div>
 
