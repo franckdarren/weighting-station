@@ -144,7 +144,7 @@
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link href="{{ route('supports') }}" :active="request()->routeIs('supports')"
                         class="{{ request()->routeIs('supports') ? 'text-black' : 'text-white hover:text-gray-300' }}">
-                        <i class="fa-solid fa-file me-1"></i>
+                        <i class="fa-solid fa-phone-volume me-1"></i>
                         {{ __('Support') }}
                     </x-nav-link>
                 </div>

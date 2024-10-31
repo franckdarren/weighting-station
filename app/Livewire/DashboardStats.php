@@ -40,7 +40,6 @@ class DashboardStats extends Component
             'datasets' => [[
                 'label' => 'Statistics',
                 'data' => [
-                    // FacturePesage::count(),
                     FacturePesage::where('statut', 'Payée')->count(),
                     FacturePesage::count() - FacturePesage::where('statut', 'Payée')->count(),
                 ],
