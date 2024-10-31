@@ -1,11 +1,17 @@
 <?php
 
+use App\Models\Ticket;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PesageController;
 
 Route::get('/', function () {
     return view('auth/login');
 });
+
+Route::get('/tickets/{ticket}', function (Ticket $ticket) {
+    $ticket->load('messages'); // Charger la relation messages
+    return view('ticket-details', ['ticket' => $ticket]);
+})->name('ticket-details');
 
 Route::middleware([
     'auth:sanctum',
