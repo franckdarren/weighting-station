@@ -226,7 +226,7 @@ class ListFactures extends Component implements HasForms, HasTable
                         ->after(function (FacturePesage $record) {  // Passer $record ici
                             activity()
                                 ->causedBy(auth()->user())
-                                ->log('Facture traitée: ' . $record->numero);
+                                ->log('Facture ' . $record->numero . ' traitée en attente de paiement');
                             Notification::make()
                                 ->title('Facture traitée avec succès.')
                                 ->success()
