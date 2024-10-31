@@ -6,6 +6,7 @@ use App\Models\User;
 use Livewire\Component;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Hash;
+use Filament\Notifications\Notification;
 
 class UserManagement extends Component
 {
@@ -43,7 +44,11 @@ class UserManagement extends Component
 
         $this->users = User::with('roles')->get();
         $this->reset(['name', 'email', 'code', 'password', 'status', 'role']);
-        session()->flash('message', 'Utilisateur créé avec succès.');
+        // session()->flash('message', 'Utilisateur créé avec succès.');
+        Notification::make()
+            ->title('Utilisateur créé avec succès.')
+            ->success()
+            ->send();
     }
 
     public function editUser($userId)
@@ -84,7 +89,11 @@ class UserManagement extends Component
 
         $this->users = User::with('roles')->get();
         $this->reset(['name', 'email', 'code', 'password', 'role', 'status', 'selectedUserId']);
-        session()->flash('message', 'Utilisateur mis à jour avec succès.');
+        // session()->flash('message', 'Utilisateur mis à jour avec succès.');
+        Notification::make()
+            ->title('Utilisateur mis à jour avec succès.')
+            ->success()
+            ->send();
     }
 
     public function resetForm()
@@ -105,7 +114,11 @@ class UserManagement extends Component
         $user = User::find($userId);
         $user->delete(); // Cela effectuera une suppression douce
         $this->users = User::with('roles')->get(); // Rafraîchit la liste des utilisateurs
-        session()->flash('message', 'Utilisateur supprimé avec succès.');
+        // session()->flash('message', 'Utilisateur supprimé avec succès.');
+        Notification::make()
+            ->title('Utilisateur supprimé avec succès.')
+            ->success()
+            ->send();
     }
 
 
