@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Models\Ticket;
 use App\Models\Message;
 use Livewire\Component;
+use Filament\Notifications\Notification;
 
 class TicketDetails extends Component
 {
@@ -34,7 +35,11 @@ class TicketDetails extends Component
         $this->messageContent = '';
 
         // Ajouter une notification si nécessaire
-        session()->flash('message', 'Message ajouté avec succès!');
+        // session()->flash('message', 'Message ajouté avec succès!');
+        Notification::make()
+            ->title('Message ajouté avec succès!')
+            ->success()
+            ->send();
     }
 
     public function updateStatus()
