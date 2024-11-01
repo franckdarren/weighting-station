@@ -33,12 +33,27 @@ Route::middleware([
     Route::get('/dashboard/rapport', function () {
         return view('dashboard.rapport');
     })->name('rapport');
+
+    //Routes des rapports
     Route::get('dashboard/rapport/pesee', function () {
         return view('dashboard.rapport.pesee');
     })->name('rapport-pesee');
     Route::get('dashboard/rapport/facture', function () {
         return view('dashboard.rapport.facture');
     })->name('rapport-facture');
+    Route::get('dashboard/rapport/vehicule', function () {
+        return view('dashboard.rapport.vehicule');
+    })->name('rapport-vehicule');
+    Route::get('dashboard/rapport/entreprise', function () {
+        return view('dashboard.rapport.entreprise');
+    })->name('rapport-entreprise');
+    Route::get('dashboard/rapport/conducteur', function () {
+        return view('dashboard.rapport.conducteur');
+    })->name('rapport-conducteur');
+    Route::get('dashboard/rapport/marchandise', function () {
+        return view('dashboard.rapport.marchandise');
+    })->name('rapport-marchandise');
+
     Route::get('/dashboard/caisse', function () {
         return view('dashboard.caisse');
     })->name('caisse');

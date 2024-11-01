@@ -116,6 +116,18 @@
                                 <a href="{{ route('rapport-facture') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                                     {{ __('Statistiques Factures') }}
                                 </a>
+                                <a href="{{ route('rapport-vehicule') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                    {{ __('Statistiques Vehicules') }}
+                                </a>
+                                <a href="{{ route('rapport-entreprise') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                    {{ __('Statistiques Entreprises') }}
+                                </a>
+                                <a href="{{ route('rapport-conducteur') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                    {{ __('Statistiques Conducteurs') }}
+                                </a>
+                                <a href="{{ route('rapport-marchandise') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                    {{ __('Statistiques Marchandises') }}
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -144,7 +156,7 @@
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link href="{{ route('supports') }}" :active="request()->routeIs('supports')"
                         class="{{ request()->routeIs('supports') ? 'text-black' : 'text-white hover:text-gray-300' }}">
-                        <i class="fa-solid fa-file me-1"></i>
+                        <i class="fa-solid fa-phone-volume me-1"></i>
                         {{ __('Support') }}
                     </x-nav-link>
                 </div>
