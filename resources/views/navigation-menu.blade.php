@@ -118,6 +118,8 @@
                                 </a>
                                 <a href="{{ route('rapport-vehicule') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                                     {{ __('Statistiques Vehicules') }}
+                                </a><a href="{{ route('rapport-marchandise') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                    {{ __('Statistiques Marchandises') }}
                                 </a>
                             </div>
                         </div>

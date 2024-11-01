@@ -44,6 +44,9 @@ Route::middleware([
     Route::get('dashboard/rapport/vehicule', function () {
         return view('dashboard.rapport.vehicule');
     })->name('rapport-vehicule');
+    Route::get('dashboard/rapport/marchandise', function () {
+        return view('dashboard.rapport.marchandise');
+    })->name('rapport-marchandise');
 
     Route::get('/dashboard/caisse', function () {
         return view('dashboard.caisse');
