@@ -3,7 +3,7 @@
 namespace App\Livewire;
 
 use Livewire\Component;
-use App\Models\BonPesee;
+use App\Models\FacturePesage;
 use Carbon\Carbon;
 
 class StatsConducteur extends Component
@@ -22,10 +22,10 @@ class StatsConducteur extends Component
         $start = Carbon::parse($this->startDate)->startOfDay();
         $end = Carbon::parse($this->endDate)->endOfDay();
         
-        $records = BonPesee::query()
+        $records = FacturePesage::query()
             ->whereDate('created_at', '>=', $start)
             ->whereDate('created_at', '<=', $end)
-            ->whereNotNull('entreprise')
+            ->whereNotNull('identite_conducteur')
             ->orderBy('created_at')
             ->get();
 
@@ -33,72 +33,69 @@ class StatsConducteur extends Component
             return ['noData' => true];
         }
 
-        // Companies Distribution
-        $companiesData = $records->groupBy('entreprise')
+        // Top Drivers Distribution
+        $driversData = $records->groupBy('identite_conducteur')
             ->map->count()
-            ->sortDesc();
+            ->sortDesc()
+            ->take(10);
 
-        // Average Weight by Company
-        $weightByCompany = $records->groupBy('entreprise')
+        // Driver Details (Top 5)
+        $topDrivers = $records->groupBy('identite_conducteur')
             ->map(function ($group) {
+                $lastRecord = $group->last();
                 return [
                     'count' => $group->count(),
-                    'avg_weight' => round($group->avg('poids'), 2),
-                    'total_weight' => $group->sum('poids')
+                    'permis' => $lastRecord->num_permis_conduire,
+                    'documents' => $lastRecord->cte_grise_licence_autres,
+                    'last_visit' => $lastRecord->created_at->format('d/m/Y')
                 ];
-            })->sortByDesc('count');
+            })
+            ->sortByDesc('count')
+            ->take(5);
 
-        // Top 5 companies timeline
-        $topCompanies = $companiesData->take(5)->keys();
+        // Daily Activity Timeline for Top 5 Drivers
         $timelineData = collect();
-        
-        foreach ($topCompanies as $company) {
-            $companyData = [];
+        foreach ($driversData->take(5)->keys() as $driver) {
+            $driverData = [];
             foreach ($records->groupBy(function ($item) {
                 return $item->created_at->format('Y-m-d');
             }) as $date => $items) {
-                $companyData[$date] = $items->where('entreprise', $company)->count();
+                $driverData[$date] = $items->where('identite_conducteur', $driver)->count();
             }
-            $timelineData[$company] = $companyData;
+            $timelineData[$driver] = $driverData;
         }
 
         return [
-            'companies' => [
-                'labels' => $companiesData->keys()->toArray(),
+            'drivers' => [
+                'labels' => $driversData->keys()->toArray(),
                 'datasets' => [[
-                    'data' => $companiesData->values()->toArray(),
+                    'data' => $driversData->values()->toArray(),
                     'backgroundColor' => [
-                        '#6366F1', '#EC4899', '#8B5CF6', '#14B8A6', '#F59E0B',
-                        '#3B82F6', '#EF4444', '#10B981', '#6366F1', '#F97316'
+                        '#3B82F6', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6',
+                        '#EC4899', '#14B8A6', '#6366F1', '#84CC16', '#F97316'
                     ],
                 ]]
             ],
-            'performance' => [
-                'labels' => $weightByCompany->take(10)->keys()->toArray(),
-                'datasets' => [
-                    [
-                        'label' => 'Nombre de pesées',
-                        'data' => $weightByCompany->take(10)->pluck('count')->toArray(),
-                        'backgroundColor' => '#6366F1',
-                        'yAxisID' => 'y',
-                    ],
-                    [
-                        'label' => 'Poids total (tonnes)',
-                        'data' => $weightByCompany->take(10)->pluck('total_weight')->map(function($weight) {
-                            return round($weight/1000, 2);
-                        })->toArray(),
-                        'backgroundColor' => '#F59E0B',
-                        'yAxisID' => 'y1',
-                    ]
-                ]
+            'details' => [
+                'labels' => ['Pesées', 'Documents valides'],
+                'drivers' => $topDrivers->map(function ($data, $driver) {
+                    return [
+                        'name' => $driver,
+                        'permis' => $data['permis'],
+                        'documents' => $data['documents'],
+                        'count' => $data['count'],
+                        'last_visit' => $data['last_visit']
+                    ];
+                })->values()->toArray()
             ],
             'timeline' => [
                 'labels' => collect($timelineData->first())->keys()->toArray(),
-                'datasets' => $timelineData->map(function ($data, $company) {
+                'datasets' => $timelineData->map(function ($data, $driver) {
+                    $color = sprintf('#%06X', mt_rand(0, 0xFFFFFF));
                     return [
-                        'label' => $company,
+                        'label' => $driver,
                         'data' => array_values($data),
-                        'borderColor' => sprintf('#%06X', mt_rand(0, 0xFFFFFF)),
+                        'borderColor' => $color,
                         'backgroundColor' => 'transparent',
                         'tension' => 0.4,
                     ];
