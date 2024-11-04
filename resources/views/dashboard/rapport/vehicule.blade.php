@@ -1,6 +1,6 @@
 <!-- Chart des stats sur les factures -->
 <x-app-layout>
     <div class="px-[5%] my-10">
-        @livewire('stats-facture')
+        @livewire('stats-vehicule')
     </div>
 </x-app-layout>

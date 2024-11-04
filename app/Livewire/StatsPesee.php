@@ -8,79 +8,82 @@ use Carbon\Carbon;
 
 class StatsPesee extends Component
 {
-    public $timeFilter = 'year';
-    public $statusFilter = 'all';
     public $startDate;
     public $endDate;
 
     public function mount()
     {
-        $this->startDate = Carbon::now()->startOfYear();
-        $this->endDate = Carbon::now();
+        $this->startDate = now()->subDays(7)->format('Y-m-d');
+        $this->endDate = now()->format('Y-m-d');
     }
 
     public function getChartData()
     {
-        $query = BonPesee::query();
+        $start = Carbon::parse($this->startDate)->startOfDay();
+        $end = Carbon::parse($this->endDate)->endOfDay();
 
-        // Pour le débogage
-        logger('Dates range:', [$this->startDate, $this->endDate]);
+        $records = BonPesee::query()
+            ->whereDate('created_at', '>=', $start)
+            ->whereDate('created_at', '<=', $end)
+            ->orderBy('created_at')
+            ->get();
 
-        // Get all records first
-        $records = $query->whereBetween('created_at', [$this->startDate, $this->endDate])->get();
-
-        // Pour le débogage
-        logger('Records count:', [$records->count()]);
-
-        // Then filter by status using the accessor
-        if ($this->statusFilter === 'Valide') {
-            $records = $records->filter(fn($record) => $record->status === 'Valide');
-        } elseif ($this->statusFilter === 'A reprendre') {
-            $records = $records->filter(fn($record) => $record->status === 'A reprendre');
+        if ($records->isEmpty()) {
+            return [
+                'noData' => true
+            ];
         }
 
-        // Pour le débogage
-        logger('Filtered records count:', [$records->count()]);
+        // Status distribution
+        $validCount = $records->filter(fn($r) => $r->status === 'Valide')->count();
+        $invalidCount = $records->filter(fn($r) => $r->status === 'A reprendre')->count();
 
-        // Group the filtered records
-        $groupFormat = match ($this->timeFilter) {
-            'year' => 'Y',
-            'month' => 'Y-m',
-            'day' => 'Y-m-d',
-        };
+        // Weight distribution
+        $weightRanges = [
+            '0-1000 kg' => $records->filter(fn($r) => $r->poids <= 1000)->count(),
+            '1001-5000 kg' => $records->filter(fn($r) => $r->poids > 1000 && $r->poids <= 5000)->count(),
+            '5001-10000 kg' => $records->filter(fn($r) => $r->poids > 5000 && $r->poids <= 10000)->count(),
+            '10000+ kg' => $records->filter(fn($r) => $r->poids > 10000)->count(),
+        ];
 
-        $data = $records->groupBy(function ($item) use ($groupFormat) {
-            return Carbon::parse($item->created_at)->format($groupFormat);
+        // Daily distribution
+        $timeData = $records->groupBy(function ($item) {
+            return $item->created_at->format('Y-m-d');
         })->map->count();
 
-        // Pour le débogage
-        logger('Grouped data:', $data->toArray());
-
-        // Si aucune donnée, créer des données factices pour test
-        if ($data->isEmpty()) {
-            $data = collect([
-                '2024-01' => 5,
-                '2024-02' => 8,
-                '2024-03' => 3,
-            ]);
-        }
-
         return [
-            'labels' => $data->keys()->toArray(),
-            'datasets' => [[
-                'label' => 'Nombre de pesées',
-                'data' => $data->values()->toArray(),
-                'borderColor' => '#3d8cd6',
-                'backgroundColor' => 'rgba(61, 140, 214, 0.2)',
-                'borderWidth' => 2,
-                'tension' => 0.4,
-                'fill' => true
-            ]]
+            'status' => [
+                'labels' => ['Valide', 'A reprendre'],
+                'datasets' => [[
+                    'data' => [$validCount, $invalidCount],
+                    'backgroundColor' => ['#10B981', '#EF4444'],
+                ]]
+            ],
+            'weights' => [
+                'labels' => array_keys($weightRanges),
+                'datasets' => [[
+                    'label' => 'Distribution des poids',
+                    'data' => array_values($weightRanges),
+                    'backgroundColor' => '#3B82F6',
+                ]]
+            ],
+            'timeline' => [
+                'labels' => $timeData->keys()->toArray(),
+                'datasets' => [[
+                    'label' => 'Nombre de pesées',
+                    'data' => $timeData->values()->toArray(),
+                    'borderColor' => '#8B5CF6',
+                    'tension' => 0.4,
+                    'fill' => true,
+                ]]
+            ]
         ];
     }
 
     public function render()
     {
-        return view('livewire.stats-pesee');
+        return view('livewire.stats-pesee', [
+            'chartData' => $this->getChartData()
+        ]);
     }
 }

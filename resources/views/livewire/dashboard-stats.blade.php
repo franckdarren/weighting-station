@@ -112,7 +112,7 @@
     <!-- Global Stats -->
     <div class="w-[60%]">
         <div class="bg-white rounded-lg shadow-xl p-6">
-            <h2 class="text-[#3d8cd6] text-2xl font-semibold text-center mb-4">Recapitulatif global</h2>
+            <h2 class="text-[#3d8cd6] text-2xl font-semibold text-center mb-4">Recapitulatif global sur les factures</h2>
             <div class="h-80">
                 <canvas x-data="{ 
                     init() {
