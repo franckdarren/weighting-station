@@ -9,7 +9,7 @@ make the needed changes regarding name, url, database connection
 
 `php artisan excel:sync`
 
-`php artisan shedule:work`
+`php artisan excel:watch`
 
 `composer install`
 
