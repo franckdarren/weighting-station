@@ -17,6 +17,8 @@ class Pv extends Model
         'surchage_e4',
         'surchage_e5',
         'surchage_e6',
+        'surchage_e7',
+
 
         'amendes_surchage_e1',
         'amendes_surchage_e2',
@@ -24,6 +26,8 @@ class Pv extends Model
         'amendes_surchage_e4',
         'amendes_surchage_e5',
         'amendes_surchage_e6',
+        'amendes_surchage_e7',
+
 
         'montant_amendes',
 

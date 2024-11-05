@@ -25,18 +25,21 @@ class BonPeseeObserver
                     'surchage_e4' => $bonPesee->poids_E4 > 14000 ? $bonPesee->poids_E4 - 14000 : 0,
                     'surchage_e5' => $bonPesee->poids_E5 > 14000 ? $bonPesee->poids_E5 - 14000 : 0,
                     'surchage_e6' => $bonPesee->poids_E6 > 14000 ? $bonPesee->poids_E6 - 14000 : 0,
+                    'surchage_e7' => $bonPesee->poids_E7 > 14000 ? $bonPesee->poids_E7 - 14000 : 0,
                     'amendes_surchage_e1' => $bonPesee->poids_E1 > 14000 ? ($bonPesee->poids_E1 - 14000) * 75 : 0,
                     'amendes_surchage_e2' => $bonPesee->poids_E2 > 14000 ? ($bonPesee->poids_E2 - 14000) * 75 : 0,
                     'amendes_surchage_e3' => $bonPesee->poids_E3 > 14000 ? ($bonPesee->poids_E3 - 14000) * 75 : 0,
                     'amendes_surchage_e4' => $bonPesee->poids_E4 > 14000 ? ($bonPesee->poids_E4 - 14000) * 75 : 0,
                     'amendes_surchage_e5' => $bonPesee->poids_E5 > 14000 ? ($bonPesee->poids_E5 - 14000) * 75 : 0,
                     'amendes_surchage_e6' => $bonPesee->poids_E6 > 14000 ? ($bonPesee->poids_E6 - 14000) * 75 : 0,
+                    'amendes_surchage_e7' => $bonPesee->poids_E7 > 14000 ? ($bonPesee->poids_E7 - 14000) * 75 : 0,
                     'montant_amendes' => ($bonPesee->poids_E1 > 14000 ? ($bonPesee->poids_E1 - 14000) * 75 : 0) +
                         ($bonPesee->poids_E2 > 14000 ? ($bonPesee->poids_E2 - 14000) * 75 : 0) +
                         ($bonPesee->poids_E3 > 14000 ? ($bonPesee->poids_E3 - 14000) * 75 : 0) +
                         ($bonPesee->poids_E4 > 14000 ? ($bonPesee->poids_E4 - 14000) * 75 : 0) +
                         ($bonPesee->poids_E5 > 14000 ? ($bonPesee->poids_E5 - 14000) * 75 : 0) +
-                        ($bonPesee->poids_E6 > 14000 ? ($bonPesee->poids_E6 - 14000) * 75 : 0),
+                        ($bonPesee->poids_E6 > 14000 ? ($bonPesee->poids_E6 - 14000) * 75 : 0) +
+                        ($bonPesee->poids_E7 > 14000 ? ($bonPesee->poids_E7 - 14000) * 75 : 0),
                     'bon_pesee_id' => $bonPesee->id,
                 ]);
 

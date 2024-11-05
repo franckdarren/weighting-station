@@ -17,11 +17,8 @@ class BonPeseeFactory extends Factory
     public function definition(): array
     {
 
-        // Récupération d'un véhicule aléatoire
-        $vehicule = Vehicule::inRandomOrder()->first();
-
         // Récupéreration de la limite de poids du type de véhicule associé
-        $limite_poids = $vehicule->typeVehicule->limite_poids;
+        $limite_poids = 84000;
 
         // Génération d'un poids aléatoire qui respecte certaines conditions
         $poids = $this->faker->numberBetween(70000, ($limite_poids + 25000));
@@ -62,6 +59,8 @@ class BonPeseeFactory extends Factory
             'poids_E4' => $parts[3],
             'poids_E5' => $parts[4],
             'poids_E6' => $parts[5],
+            'poids_E7' => $parts[6],
+
         ];
     }
 
@@ -84,9 +83,9 @@ class BonPeseeFactory extends Factory
 
         // Répartir aléatoirement les poids avec les contraintes
         $remainingWeight = $poids;
-        for ($i = 0; $i < 5; $i++) {
+        for ($i = 0; $i < 6; $i++) {
             // Générer un poids aléatoire dans les limites
-            $weight = $this->faker->numberBetween($minWeight, min($maxWeight, $remainingWeight - ($minWeight * (5 - $i))));
+            $weight = $this->faker->numberBetween($minWeight, min($maxWeight, $remainingWeight - ($minWeight * (6 - $i))));
 
             $weights[] = $weight;
             $remainingWeight -= $weight;

@@ -23,6 +23,9 @@ class BonPesee extends Model
         'poids_E4',
         'poids_E5',
         'poids_E6',
+        'poids_E7',
+
+
 
 
     ];

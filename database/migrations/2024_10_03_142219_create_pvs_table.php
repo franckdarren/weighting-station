@@ -20,6 +20,8 @@ return new class extends Migration
             $table->string('surchage_e4')->nullable();
             $table->string('surchage_e5')->nullable();
             $table->string('surchage_e6')->nullable();
+            $table->string('surchage_e7')->nullable();
+
 
             $table->string('amendes_surchage_e1')->nullable();
             $table->string('amendes_surchage_e2')->nullable();
@@ -27,6 +29,8 @@ return new class extends Migration
             $table->string('amendes_surchage_e4')->nullable();
             $table->string('amendes_surchage_e5')->nullable();
             $table->string('amendes_surchage_e6')->nullable();
+            $table->string('amendes_surchage_e7')->nullable();
+
 
             $table->string('montant_amendes')->nullable();
 
