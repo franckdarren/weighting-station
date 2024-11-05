@@ -6,6 +6,7 @@ use App\Models\Ticket;
 use App\Models\Message;
 use Livewire\Component;
 use Filament\Notifications\Notification;
+use App\Notifications\TicketResponseNotification;
 
 class TicketDetails extends Component
 {
@@ -25,21 +26,24 @@ class TicketDetails extends Component
             'messageContent' => 'required|string|max:255',
         ]);
 
-        Message::create([
+        // Créer le message
+        $message = Message::create([
             'ticket_id' => $this->ticket->id,
             'user_id' => auth()->id(),
             'content' => $this->messageContent,
         ]);
 
-        // Réinitialiser le contenu du message après l'ajout
-        $this->messageContent = '';
+        // Envoie la notification au créateur du ticket
+        $this->ticket->user->notify(new TicketResponseNotification($this->ticket, $message->content));
 
-        // Ajouter une notification si nécessaire
-        // session()->flash('message', 'Message ajouté avec succès!');
+        // Notification de succès pour l'utilisateur
         Notification::make()
             ->title('Message ajouté avec succès!')
             ->success()
             ->send();
+
+        // Réinitialiser le contenu du message après l'ajout
+        $this->messageContent = '';
     }
 
     public function updateStatus()
@@ -47,8 +51,14 @@ class TicketDetails extends Component
         $this->ticket->status = $this->status;
         $this->ticket->save();
 
-        // Ajouter une notification si nécessaire
-        session()->flash('message', 'Statut du ticket mis à jour!');
+        // Ajouter une notification pour le créateur du ticket
+        $this->ticket->user->notify(new \App\Notifications\StatusUpdatedNotification($this->ticket));
+
+        // Notification de succès pour l'utilisateur
+        Notification::make()
+            ->title('Statut du ticket mis à jour!')
+            ->success()
+            ->send();
     }
 
     public function render()

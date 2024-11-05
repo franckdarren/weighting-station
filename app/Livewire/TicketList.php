@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Ticket;
+use Livewire\Livewire;
 use Livewire\Component;
 use Filament\Tables\Table;
 use Filament\Tables\Actions\Action;
@@ -15,6 +16,7 @@ use Filament\Tables\Contracts\HasTable;
 use Filament\Notifications\Notification;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Tables\Concerns\InteractsWithTable;
+use App\Notifications\TicketResponseNotification;
 
 class TicketList extends Component implements HasForms, HasTable
 {
@@ -25,11 +27,33 @@ class TicketList extends Component implements HasForms, HasTable
     public $title = '';
     public $description = '';
 
+    public function getUnreadNotificationsProperty()
+    {
+        return auth()->user()->unreadNotifications;
+    }
+
+    public function markAsRead($notificationId)
+    {
+        auth()->user()->notifications()->where('id', $notificationId)->update(['read_at' => now()]);
+
+        // Rafraîchir la liste des notifications pour ne plus inclure les notifications lues
+        $this->emitSelf('refreshComponent');
+    }
+
+    protected $listeners = ['refreshComponent' => '$refresh'];
+
     public function table(Table $table): Table
     {
+        $query = Ticket::query()->with('user');
+
+        // Vérifier si l'utilisateur est un administrateur
+        if (!auth()->user()->hasRole('Administrateur')) {
+            // Si l'utilisateur n'est pas un administrateur, afficher uniquement ses propres tickets
+            $query->where('user_id', auth()->id());
+        }
+
         return $table
-            ->query(Ticket::query()
-                ->with('user')) // Charger l'utilisateur associé
+            ->query($query) // Utilisez la requête filtrée
             ->defaultSort('created_at', 'desc')
             ->columns([
                 TextColumn::make('id')
@@ -73,14 +97,21 @@ class TicketList extends Component implements HasForms, HasTable
                         Textarea::make('message')->required()->label('Votre réponse') // Modifier le champ en "message"
                     ])
                     ->action(function (Ticket $record, array $data) {
-                        $record->messages()->create([ // Utiliser "messages" au lieu de "responses"
+                        $message = $record->messages()->create([
                             'user_id' => auth()->id(),
-                            'content' => $data['message'], // Utiliser le nom du champ "message"
+                            'content' => $data['message'],
                         ]);
-                        // Ajouter une notification ici, si nécessaire
+
+                        // Envoie la notification au créateur du ticket
+                        $record->user->notify(new TicketResponseNotification($record, $message->content));
+
+                        // Notification pour l'utilisateur qui a répondu (optionnelle)
+                        Notification::make()
+                            ->title('Réponse envoyée avec succès !')
+                            ->success()
+                            ->send();
                     }),
             ])
-
             ->bulkActions([]); // Ajoute des actions de masse si nécessaire
     }
 
