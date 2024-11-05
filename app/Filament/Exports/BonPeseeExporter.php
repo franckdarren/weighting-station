@@ -15,23 +15,12 @@ final class BonPeseeExporter extends Exporter
     {
         return [
             ExportColumn::make('numero'),
-            ExportColumn::make('produits_transportes'),
-            ExportColumn::make('provenance'),
-            ExportColumn::make('destination'),
-            ExportColumn::make('lineaire_parcouru'),
-            ExportColumn::make('lineaire_restant'),
-            ExportColumn::make('poids'),
-            ExportColumn::make('surchage'),
             ExportColumn::make('vitesse'),
-            ExportColumn::make('poids_E1'),
-            ExportColumn::make('poids_E2'),
-            ExportColumn::make('poids_E3'),
-            ExportColumn::make('poids_E4'),
-            ExportColumn::make('poids_E5'),
-            ExportColumn::make('poids_E6'),
-
-            ExportColumn::make('vehicule_id'),
-            ExportColumn::make('conducteur_id'),
+            ExportColumn::make('status'),
+            ExportColumn::make('plaque_immatriculation'),
+            ExportColumn::make('entreprise'),
+            ExportColumn::make('produits_transportes'),
+            ExportColumn::make('description'),
         ];
     }
 

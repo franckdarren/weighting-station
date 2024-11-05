@@ -20,6 +20,7 @@ use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Forms\Components\TextInput;
+use Filament\Notifications\Notification;
 use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Actions\ExportAction;
 use Illuminate\Database\Eloquent\Builder;
@@ -225,7 +226,11 @@ class ListFactures extends Component implements HasForms, HasTable
                         ->after(function (FacturePesage $record) {  // Passer $record ici
                             activity()
                                 ->causedBy(auth()->user())
-                                ->log('Facture traitée: ' . $record->numero);
+                                ->log('Facture ' . $record->numero . ' traitée en attente de paiement');
+                            Notification::make()
+                                ->title('Facture traitée avec succès.')
+                                ->success()
+                                ->send();
                         })
                 ])
                     ->link()

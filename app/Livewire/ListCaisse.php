@@ -22,6 +22,7 @@ use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Forms\Components\TextInput;
+use Filament\Notifications\Notification;
 use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Actions\ExportAction;
 use Illuminate\Database\Eloquent\Builder;
@@ -254,10 +255,14 @@ class ListCaisse extends Component implements HasForms, HasTable
                             'statut' => $record->statut,
                         ]))
                         ->visible(fn() => auth()->user()->can('edit factures'))
-                        ->after(function () {
+                        ->after(function (FacturePesage $record) {
                             activity()
                                 ->causedBy(auth()->user())
-                                ->log('Facture modifiée.');
+                                ->log('Facture ' .  $record->numero . ' modifiée au statut ' . $record->statut);
+                            Notification::make()
+                                ->title('Facture traitée avec succès.')
+                                ->success()
+                                ->send();
                         })
 
                 ])

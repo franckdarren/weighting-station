@@ -33,6 +33,8 @@ return new class extends Migration
             $table->integer('poids_E4')->nullable();
             $table->integer('poids_E5')->nullable();
             $table->integer('poids_E6')->nullable();
+            $table->integer('poids_E7')->nullable();
+
 
 
 

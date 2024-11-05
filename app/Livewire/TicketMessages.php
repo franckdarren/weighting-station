@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Models\Ticket;
 use App\Models\Message;
 use Livewire\Component;
+use Filament\Notifications\Notification;
 
 class TicketMessages extends Component
 {
@@ -27,6 +28,10 @@ class TicketMessages extends Component
             'user_id' => auth()->id(),
             'content' => $this->newMessage,
         ]);
+        Notification::make()
+            ->title('Message ajouté avec succès!')
+            ->success()
+            ->send();
 
         $this->newMessage = '';
         $this->ticket->refresh(); // Rafraîchit les messages du ticket

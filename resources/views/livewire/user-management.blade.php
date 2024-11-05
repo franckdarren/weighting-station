@@ -138,11 +138,11 @@
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap flex gap-[10px]">
                             <button wire:click="editUser({{ $user->id }})"
-                                class="text-indigo-600 hover:text-indigo-900 text-sm">
+                                class="bg-indigo-600 hover:bg-indigo-900 text-sm text-white p-2 rounded-md">
                                 Éditer
                             </button>
                             <button wire:click="deleteUser({{ $user->id }})"
-                                class="text-red-600 hover:text-red-900 text-sm">
+                                class="bg-red-600 hover:bg-red-900 text-sm text-white p-2 rounded-md">
                                 Supprimer
                             </button>
 
