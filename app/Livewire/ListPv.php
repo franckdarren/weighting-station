@@ -54,7 +54,7 @@ class ListPv extends Component implements HasForms, HasTable
                 TextColumn::make('montant_amendes')
                     ->sortable()
                     ->formatStateUsing(function ($state) {
-                        return number_format($state, 0, '', ' ');
+                        return number_format($state, 0, '', ' ') . ' FCFA';
                     }),
 
                 TextColumn::make('created_at')

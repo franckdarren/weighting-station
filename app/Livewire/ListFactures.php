@@ -87,11 +87,11 @@ class ListFactures extends Component implements HasForms, HasTable
                 TextColumn::make('pv.montant_amendes')
                     ->label("Montant amendes")
                     ->formatStateUsing(function ($state) {
-                        return number_format($state, 0, '', ' ');
+                        return number_format($state, 0, '', ' ') . ' FCFA';
                     }),
                 TextColumn::make('montant_total')
                     ->formatStateUsing(function ($state) {
-                        return number_format($state, 0, '', ' ');
+                        return number_format($state, 0, '', ' ') . ' FCFA';
                     }),
 
                 TextColumn::make('provenance')
