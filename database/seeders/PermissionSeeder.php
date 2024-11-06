@@ -48,5 +48,11 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'edit reglementations']);
         Permission::create(['name' => 'delete reglementations']);
         Permission::create(['name' => 'view reglementations']);
+
+        // PV
+        Permission::create(['name' => 'create pv']);
+        Permission::create(['name' => 'edit pv']);
+        Permission::create(['name' => 'delete pv']);
+        Permission::create(['name' => 'view pv']);
     }
 }

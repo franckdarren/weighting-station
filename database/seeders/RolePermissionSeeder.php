@@ -48,6 +48,11 @@ class RolePermissionSeeder extends Seeder
         $deletePesée = Permission::where('name', 'delete pesée')->first();
         $viewPesée = Permission::where('name', 'view pesée')->first();
 
+        $viewPv = Permission::where('name', 'view pv')->first();
+        $editPv = Permission::where('name', 'edit pv')->first();
+
+
+
         // Assigner des permissions aux rôles
         $manager->givePermissionTo([
             $createFactures,
@@ -72,6 +77,9 @@ class RolePermissionSeeder extends Seeder
             $editRapports,
 
             $viewReglementations,
+
+            $viewPv,
+            $editPv,
         ]);
 
         $superviseur->givePermissionTo([
@@ -92,6 +100,9 @@ class RolePermissionSeeder extends Seeder
             $editRapports,
 
             $viewReglementations,
+
+            $viewPv,
+            $editPv,
         ]);
 
         $operateurPrimaire->givePermissionTo([
@@ -100,7 +111,10 @@ class RolePermissionSeeder extends Seeder
 
         $operateurFacture->givePermissionTo([
             $viewFactures,
+            $editFactures,
             $viewReglementations,
+            $viewPv,
+            $editPv,
 
         ]);
 

@@ -27,6 +27,9 @@ Route::middleware([
     Route::get('/dashboard/facturation', function () {
         return view('dashboard.facturation');
     })->name('facturation');
+    Route::get('/dashboard/pv', function () {
+        return view('dashboard.pv');
+    })->name('pv');
     Route::get('/dashboard/texteReglementation', function () {
         return view('dashboard.texteReglementation');
     })->name('texteReglementation');
