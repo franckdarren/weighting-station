@@ -19,6 +19,8 @@
 
     span {
         font-weight: normal;
+        font-size: 10px;
+        color: #9e9e9e;
     }
 
     body {
@@ -42,17 +44,14 @@
         /* max-width: 900px; */
         width: 100%;
         margin-inline: auto;
-
+        
         position: relative;
     }
 
     h1 {
         padding-top: 0.25rem;
         padding-bottom: 0.25rem;
-        font-size: 0.80rem;
         line-height: 1rem;
-        font-weight: 500;
-        color: #5a5230;
         /* height: 130px; */
         display: inline-block;
     }
@@ -72,7 +71,7 @@
         /* border-top: 1.5px solid #eeeeee; */
     }
 
-
+    
     .uppercase {
         text-transform: uppercase;
     }
@@ -90,7 +89,6 @@
 
     p span {
         display: inline-block;
-        color: #212121;
         text-transform: uppercase;
         font-weight: 600;
     }
@@ -127,9 +125,7 @@
         text-align: center;
     }
 
-    thead {
-        background-color: rgb(236, 223, 185);
-    }
+    
 
     tfoot {
         border-top: 1.5px solid #eeeeee;
@@ -185,21 +181,6 @@
     .first-line {
         border-top: 1px solid #000;
     }
-
-    .logo-for-the-moment {
-        --tw-text-opacity: 1;
-        color: rgb(220 38 38 / var(--tw-text-opacity))
-            /* #dc2626 */
-        ;
-        --tw-bg-opacity: 1;
-        background-color: rgb(251 146 60 / var(--tw-bg-opacity))
-            /* #fb923c */
-        ;
-        text-align: center;
-        border-radius: 9999px;
-        border-width: 1px;
-        padding: 12px;
-    }
 </style>
 
 <body>
@@ -207,16 +188,15 @@
         <div class="container">
             <div class="head" style="display: flex; justify-content: center; align-items: center">
                 <div style="display: inline-block">
-                    <!-- <img src=" " alt="logo" /> -->
-                    <h1 class="logo-for-the-moment">TPL</h1>
+                    <img src=" " alt="logo" />
                 </div>
                 <h1
                     style="
               align-items: center;
               display: flex;
               justify-content: center;
-              background-color: #464040;
-              color: #fff;
+             font-weight: bold;
+              color: #b8b5b5;
               width: 100%;
             ">
                     Station de pesage de Ndjole
@@ -228,39 +208,40 @@
             
             margin-top: 10px;
             margin-bottom: 10px;
-            background-color: #c4bebe;
             color: #000;
             width: 100%;
           ">
                 Amende de constat d'infraction de surchage
             </h1>
             <div>
-                <div class="head-invoice">
+                <div style="display: flex; justify-content: space-between; align-items: center; gap: 20px;">
 
                     <div class="section-livraison">
+                        <p style="margin-bottom: 5px; color: #9e9e9e;">Date : 9 août 2024</p>
+                        <h4 style="color: #000; border-bottom: solid 1px #9e9e9e; padding-bottom: 5px;">Amende de constat d'infraction de surcharge</h4>
                         <h4 class="sub-title">
                             N°Bon de pesée : <span style="margin-right: 30%;" class="capitalize">
                                 {{ $bp->numero }}</span>
-                            Matricule vehicule: <span>{{ $vehicule->plaque_immatriculation }}</span>
+                                
                         </h4>
                         <h4 class="sub-title">
                             N° de pv de constat de surcharge :
                             <span style="margin-right: 20%;"
-                                class="capitalize">{{ $pv->numero ?? '                  ' }}</span>Société :
-                            <span>{{ $vehicule->entreprise }}</span>
+                                class="capitalize">{{ $pv->numero ?? '                  ' }}</span>
+                           
                         </h4>
-                        <h4>
-                            Nom et prénom du chauffeur : <span style="margin-right: 20%;">{{ $conducteur->nom }}
-                                {{ $conducteur->prenoms }}</span>
-                            Provenance : <span>{{ $bp->provenance }}</span>
-                        </h4>
-                        <h4>Destination : <span style="margin-right: 30%;">{{ $bp->destination }}</span>
-                            Produit transporté : <span>{{ $bp->produits_transportes }}</span></h4>
                     </div>
-                    <br>
-
-                    <p>Opérateur : {{ Auth::user()->code }}</p>
-
+                    <div style="display: flex; flex-direction: column;">
+                        <span>Matricule vehicule: {{ $vehicule->plaque_immatriculation }}</span>
+                        <span>Société : {{ $vehicule->entreprise }}</span>
+                        
+                             <span>Nom et prénom du chauffeur : {{ $conducteur->nom }}
+                                {{ $conducteur->prenoms }}</span>
+                            <span>Provenance :  {{ $bp->provenance }}</span>
+                        
+                        <span>Destination : {{ $bp->destination }}</span>
+                            <span>Produit transporté : {{ $bp->produits_transportes }}</span>
+                    </div>
                 </div>
             </div>
 
@@ -269,7 +250,7 @@
                     <table border="2">
                         <thead>
                             <tr>
-                                <th colspan="4">
+                                <th colspan="4" style="text-align: right;">
                                     Controle sur le poids total autorisé a chargé (PTAC)
                                 </th>
                             </tr>
@@ -292,7 +273,7 @@
 
                     <table border="2">
                         <thead>
-                            <th colspan="5">Contrôle sur le groupement d'essieux</th>
+                            <th colspan="5" style="text-align: right;">Contrôle sur le groupement d'essieux</th>
                         </thead>
                         <tbody>
                             <tr>
@@ -328,7 +309,7 @@
                     <table border="2">
                         <thead>
                             <td style="background-color: #f5f1f1"></td>
-                            <th colspan="5">Contrôle a l'essieu</th>
+                            <th colspan="5" style="text-align: right;">Contrôle a l'essieu</th>
                         </thead>
                         <tbody>
                             <tr>
@@ -440,18 +421,13 @@
                                         ' ',
                                     ) }}
 
-                                    XAF TTC
-                                </td>
+                                    XAF TTC</td>
                             </tr>
                         </tbody>
                     </table>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
+
                     <h3 style="margin-left: 50%; margin-top: 20px">Etabli a Ndjole, le
-                        {{ \Carbon\Carbon::now()->format('d/m/Y') }}
-                    </h3>
+                        {{ \Carbon\Carbon::now()->format('d/m/Y') }}</h3>
                 </div>
             </div>
         </div>
