@@ -271,12 +271,6 @@ class ListFactures extends Component implements HasForms, HasTable
         // Recherchez le PV correspondant
         $pv = Pv::find($pv_id);
 
-        // Recherchez le Véhicule correspondant
-        // $vehicule = Vehicule::find($bp->vehicule_id);
-
-        // Recherchez le Conducteur correspondant
-        // $conducteur = Conducteur::find($bp->conducteur_id);
-
         // Groupes essieux
         $ge1 = $bp->poids_E1 + $bp->poids_E2;
         $ge2 = $bp->poids_E3 + $bp->poids_E4 + $bp->poids_E5;
