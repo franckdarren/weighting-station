@@ -44,7 +44,7 @@
         /* max-width: 900px; */
         width: 100%;
         margin-inline: auto;
-        
+
         position: relative;
     }
 
@@ -71,7 +71,7 @@
         /* border-top: 1.5px solid #eeeeee; */
     }
 
-    
+
     .uppercase {
         text-transform: uppercase;
     }
@@ -125,7 +125,7 @@
         text-align: center;
     }
 
-    
+
 
     tfoot {
         border-top: 1.5px solid #eeeeee;
@@ -218,28 +218,28 @@
 
                     <div class="section-livraison">
                         <p style="margin-bottom: 5px; color: #9e9e9e;">Date : 9 août 2024</p>
-                        <h4 style="color: #000; border-bottom: solid 1px #9e9e9e; padding-bottom: 5px;">Amende de constat d'infraction de surcharge</h4>
+                        <h4 style="color: #000; border-bottom: solid 1px #9e9e9e; padding-bottom: 5px;">Amende de
+                            constat d'infraction de surcharge</h4>
                         <h4 class="sub-title">
                             N°Bon de pesée : <span style="margin-right: 30%;" class="capitalize">
                                 {{ $bp->numero }}</span>
-                                
+
                         </h4>
                         <h4 class="sub-title">
                             N° de pv de constat de surcharge :
                             <span style="margin-right: 20%;"
                                 class="capitalize">{{ $pv->numero ?? '                  ' }}</span>
-                           
+
                         </h4>
                     </div>
                     <div style="display: flex; flex-direction: column;">
-                        <span>Matricule vehicule: {{ $vehicule->plaque_immatriculation }}</span>
-                        <span>Société : {{ $vehicule->entreprise }}</span>
-                        
-                             <span>Nom et prénom du chauffeur : {{ $conducteur->nom }}
-                                {{ $conducteur->prenoms }}</span>
-                            <span>Provenance :  {{ $bp->provenance }}</span>
-                        
-                        <span>Destination : {{ $bp->destination }}</span>
+                        <span>Matricule vehicule: {{ $bp->plaque_immatriculation }}</span>
+                        <span>Société : {{ $bp->entreprise }}</span>
+
+                        <span>Nom et prénom du chauffeur : {{ $facture->identite_conducteur }}
+                            <span>Provenance : {{ $facture->provenance }}</span>
+
+                            <span>Destination : {{ $facture->destination }}</span>
                             <span>Produit transporté : {{ $bp->produits_transportes }}</span>
                     </div>
                 </div>
@@ -369,12 +369,12 @@
                                 <td>{{ number_format(max($bp->poids_E6 - 14000, 0) * 75, 0, ',', ' ') }}</td>
                             </tr>
                             <tr>
-                                <td>0</td>
+                                <td>1</td>
                                 <td>7</td>
-                                <td>0</td>
+                                <td>{{ $bp->poids_E7 }}</td>
                                 <td>14000</td>
-                                <td>0</td>
-                                <td>0</td>
+                                <td>{{ max($bp->poids_E7 - 14000, 0) }}</td>
+                                <td>{{ number_format(max($bp->poids_E7 - 14000, 0) * 75, 0, ',', ' ') }}</td>
                             </tr>
                             <tr>
                                 <td style="text-align: center">Type : 5</td>
@@ -393,7 +393,8 @@
                             <tr>
                                 <td>Amendes:
                                     {{ number_format(
-                                        max($bp->poids_E6 - 14000, 0) * 75 +
+                                        max($bp->poids_E7 - 14000, 0) * 75 +
+                                            max($bp->poids_E6 - 14000, 0) * 75 +
                                             max($bp->poids_E5 - 14000, 0) * 75 +
                                             max($bp->poids_E4 - 14000, 0) * 75 +
                                             max($bp->poids_E3 - 14000, 0) * 75 +
@@ -409,7 +410,8 @@
                             <tr>
                                 <td>Net à payer:
                                     {{ number_format(
-                                        max($bp->poids_E6 - 14000, 0) * 75 +
+                                        max($bp->poids_E7 - 14000, 0) * 75 +
+                                            max($bp->poids_E6 - 14000, 0) * 75 +
                                             max($bp->poids_E5 - 14000, 0) * 75 +
                                             max($bp->poids_E4 - 14000, 0) * 75 +
                                             max($bp->poids_E3 - 14000, 0) * 75 +
