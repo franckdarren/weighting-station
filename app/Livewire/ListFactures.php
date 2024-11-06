@@ -178,12 +178,10 @@ class ListFactures extends Component implements HasForms, HasTable
                                         ->required(),
 
                                     TextInput::make('num_permis_conduire')
-                                        ->label('Permis de conduire')
-                                        ->required(),
+                                        ->label('Permis de conduire'),
 
                                     TextInput::make('cte_grise_licence_autres')
-                                        ->label('Carte grise/Licence/Autres')
-                                        ->required(),
+                                        ->label('Carte grise/Licence/Autres'),
 
                                 ]),
 
@@ -222,8 +220,9 @@ class ListFactures extends Component implements HasForms, HasTable
                             'observations' => $record->observations,
                             'statut' => $record->statut,
                         ]))
-                        ->visible(fn() => auth()->user()->can('edit factures'))
-                        ->after(function (FacturePesage $record) {  // Passer $record ici
+                        ->visible(fn(FacturePesage $record) => auth()->user()->can('edit factures') && $record->statut === 'En attente de traitement') // Masquer pour les utilisateurs sans cette permission
+                        ->after(function (FacturePesage $record) {  // Passer $record ici                        ->visible(fn(FacturePesage $record) => auth()->user()->can('edit factures') && $record->statut === 'En attente de traitement') // Masquer pour les utilisateurs sans cette permission
+
                             activity()
                                 ->causedBy(auth()->user())
                                 ->log('Facture ' . $record->numero . ' traitée en attente de paiement');

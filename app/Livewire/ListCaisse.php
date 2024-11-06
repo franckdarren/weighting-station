@@ -254,7 +254,7 @@ class ListCaisse extends Component implements HasForms, HasTable
                             'trop_percu' => $record->trop_percu,
                             'statut' => $record->statut,
                         ]))
-                        ->visible(fn() => auth()->user()->can('edit factures'))
+                        ->visible(fn(FacturePesage $record) => auth()->user()->can('view factures') && $record->statut !== 'Payée') // Masquer pour les utilisateurs sans cette permission
                         ->after(function (FacturePesage $record) {
                             activity()
                                 ->causedBy(auth()->user())
