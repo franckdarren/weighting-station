@@ -19,6 +19,6 @@
             <div class="ms-2">
                 <img src="build/assets/Logo_pc-tech.jpg" alt="" class="w-[70px] h-auto">
             </div>
-            <p class="text-[14px] my-5">Copy right @ 2024 KFC Weighting Station</p>
+            <p class="text-[14px] my-5">Copyright @ 2024 KFC Weighting Station</p>
         </div>
     </div>
