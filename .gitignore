@@ -1,11 +1,14 @@
 *.sqlite*
 /node_modules*
 /vendor*
-.env*
+.env
 /storage
 /bootstrap/cache
 /storage/framework/sessions
 /public/mix-manifest.json
+/public/js
+/public/css
+/public/hot
 .idea
 *.iml
 *.bak
